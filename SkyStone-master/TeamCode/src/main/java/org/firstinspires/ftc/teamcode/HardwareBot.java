@@ -10,10 +10,9 @@ public class HardwareBot {
     // strafe drive moves the robot in the horizontal direction
     public DcMotor leftDrive, rightDrive, strafeDrive, lift;
     public Servo moveFoundation, grabber;
-    public ColorSensor surfaceScanner;
+    public ColorSensor surfaceScannerLeft, surfaceScannerRight;
 
     public HardwareBot(){} //todo should i add an option for different settings?
-
 
     /* By separating state from hardware we can by make multiple setting profiles for state init
      * For e.g. different init methods for teleOp and Autonomous
@@ -25,7 +24,7 @@ public class HardwareBot {
         initState();
     }
 
-    public void initHardware(HardwareMap hardwareMap){
+    private void initHardware(HardwareMap hardwareMap){
         HardwareMap hwmap = hardwareMap;
 
     /* Init motors */
@@ -40,18 +39,22 @@ public class HardwareBot {
         grabber = hwmap.get(Servo.class, "grabber");
 
     /* Init sensors */
-        surfaceScanner = hwmap.get(ColorSensor.class, "surfaceScanner");
+        surfaceScannerLeft = hwmap.get(ColorSensor.class, "surface_scanner_left");
+        surfaceScannerRight = hwmap.get(ColorSensor.class, "surface_scanner_right");
     }
-    public void initState(){
+    private void initState(){
         leftDrive.setPower(0);
         rightDrive.setPower(0);
         strafeDrive.setPower(0);
         lift.setPower(0);
         //todo find moveFoundation init position
         //todo find grabber init position
-    // turns on color sensor led if its of
-        if (surfaceScanner instanceof SwitchableLight) {
-            ((SwitchableLight)surfaceScanner).enableLight(true);
+    // turns on color sensor led if its off
+        if (surfaceScannerLeft instanceof SwitchableLight) {
+            ((SwitchableLight) surfaceScannerLeft).enableLight(true);
+        }
+        if (surfaceScannerRight instanceof SwitchableLight) {
+            ((SwitchableLight) surfaceScannerRight).enableLight(true);
         }
     }
 }
