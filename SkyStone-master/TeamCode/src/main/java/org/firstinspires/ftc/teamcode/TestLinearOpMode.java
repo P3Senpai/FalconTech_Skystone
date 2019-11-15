@@ -53,7 +53,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="Test: Linear OpMode", group="Linear Opmode")
 //@Disabled
-public class testLinearOpMode extends LinearOpMode {
+public class TestLinearOpMode extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -91,5 +91,52 @@ public class testLinearOpMode extends LinearOpMode {
         bot.strafeDrive.setPower(strafePower);
 
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+    }
+    private void driveByVelocity(double inputData, double maxPower, double velocityForward, double velocitySideways){
+        // Set up variables
+        double power, leftPower, rightPower, forwardV, sidewaysV, threshold, powerPercentWeight, sidewaysPercentWeight;
+        maxPower = Math.abs(maxPower);
+        threshold = maxPower * 1.5;     // todo TEST if threshold value is good (since it is random)
+        powerPercentWeight = 0.95;      // todo TEST if weight strong enough
+        sidewaysPercentWeight = 1 - powerPercentWeight;
+
+        // Set range for values
+        power = Range.clip(inputData, -maxPower, maxPower);
+        forwardV = Range.clip(velocityForward, -maxPower, maxPower);
+        sidewaysV = Range.clip(velocitySideways, -maxPower*sidewaysPercentWeight, maxPower*sidewaysPercentWeight);
+
+        // limit power if predicted drastic changes in magnitude
+        if (Math.abs(forwardV - power) > threshold){
+            power *= 0.3;
+        }else{
+            power *= powerPercentWeight;
+        }
+        // positive axis is left and negative is right
+        leftPower = power + sidewaysV;  // sideways velocity prevents drifting
+        rightPower = power - sidewaysV; // sideways velocity prevents drifting
+        // Set motor speeds
+        bot.leftDrive.setPower(leftPower);
+        bot.rightDrive.setPower(rightPower);
+    }
+    // uses x and y velocity to adjust turning in order to center it
+    private void turnByVelocity(double inputData, double maxPower, int turn, double xAxisV, double yAxisV) {
+        // Define key variables
+        double power, errorX, errorY, leftPower, rightPower, powerSignificance, errorSignificance, error, errorMin, errorMax;
+        maxPower = Math.abs(maxPower);
+        powerSignificance = 0.9;    // % weight on the power value
+        errorSignificance = (1 - powerSignificance);  // % weight on error value
+        errorMin = (-maxPower * errorSignificance) / 2;   // halves weight so that zero is center
+        errorMax = (maxPower * errorSignificance) / 2;    // halves weight so that zero is center
+        // Set value ranges
+        power = Range.clip(inputData, 0, maxPower * powerSignificance);
+        errorX = Range.clip(xAxisV, errorMin, errorMax);
+        errorY = Range.clip(yAxisV, errorMin, errorMax);
+        // main calculation that centers robot while turning
+        error = errorX + errorY * turn;
+        leftPower = power - error;  // as if error > 0 then leftPowerOutput > rightPowerOutput
+        rightPower = power + error; // as if error < 0 then leftPowerOutput < rightPowerOutput
+        // set drive power
+        bot.leftDrive.setPower(-leftPower * turn);    // turns left on default
+        bot.rightDrive.setPower(rightPower * turn);
     }
 }
