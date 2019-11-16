@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bc70c379-fe17-4009-bb52-b6e951902fa0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/FalconTech_Skystone.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoDriveEncoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ConceptVuforiaSkyStoneNavigation.java" beforeDir="false" afterPath="$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ConceptVuforiaSkyStoneNavigation.java" afterDir="false" />
-    </list>
+    <list default="true" id="bc70c379-fe17-4009-bb52-b6e951902fa0" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +17,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SkyStone-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuforiaSkyStoneNavigation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="61">
+            <state relative-caret-position="2220">
               <caret line="196" column="24" selection-start-line="196" selection-start-column="24" selection-end-line="196" selection-end-column="75" />
             </state>
           </provider>
@@ -33,15 +25,13 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoDriveEncoder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-22" />
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ConceptVuforiaSkyStoneNavigation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1210">
+            <state relative-caret-position="15">
               <caret line="110" column="12" selection-start-line="110" selection-start-column="12" selection-end-line="110" selection-end-column="394" />
             </state>
           </provider>
@@ -283,7 +273,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="android.sdk.path" value="$PROJECT_DIR$/../Library/Android/sdk" />
+    <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
   </component>
@@ -383,13 +373,7 @@
     <entry file="file://$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/HardwareBot.java">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ConceptVuMarkIdentification.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-600">
-          <caret line="104" column="421" selection-start-line="104" selection-start-column="421" selection-end-line="104" selection-end-column="421" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ConceptVuMarkIdentification.java" />
     <entry file="file://$PROJECT_DIR$/SkyStone-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuMarkIdentification.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1050">
@@ -419,19 +403,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/SkyStone-master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuforiaSkyStoneNavigation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="61">
+        <state relative-caret-position="2220">
           <caret line="196" column="24" selection-start-line="196" selection-start-column="24" selection-end-line="196" selection-end-column="75" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/AutoDriveEncoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-22" />
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/SkyStone-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ConceptVuforiaSkyStoneNavigation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1210">
+        <state relative-caret-position="15">
           <caret line="110" column="12" selection-start-line="110" selection-start-column="12" selection-end-line="110" selection-end-column="394" />
         </state>
       </provider>

@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
 public class HardwareBot {
     // strafe drive moves the robot in the horizontal direction
     public DcMotor leftDrive, rightDrive, strafeDrive, lift;
-    public Servo moveFoundation, grabber;
-    public ColorSensor surfaceScannerLeft, surfaceScannerRight;
+    //public Servo moveFoundation, grabber;
+    //public ColorSensor surfaceScannerLeft, surfaceScannerRight;
 
     public HardwareBot(){} //todo should i add an option for different settings?
 
@@ -31,16 +31,16 @@ public class HardwareBot {
         leftDrive = hwmap.get(DcMotor.class, "left_drive");
         rightDrive = hwmap.get(DcMotor.class, "right_drive");
         strafeDrive = hwmap.get(DcMotor.class, "strafe_drive");
-        lift = hwmap.get(DcMotor.class, "lift");
+      //  lift = hwmap.get(DcMotor.class, "lift");
 
         // Set motor direction
     /* Init servos */
-        moveFoundation = hwmap.get(Servo.class, "move_foundation");
-        grabber = hwmap.get(Servo.class, "grabber");
+     //   moveFoundation = hwmap.get(Servo.class, "move_foundation");
+     //   grabber = hwmap.get(Servo.class, "grabber");
 
     /* Init sensors */
-        surfaceScannerLeft = hwmap.get(ColorSensor.class, "surface_scanner_left");
-        surfaceScannerRight = hwmap.get(ColorSensor.class, "surface_scanner_right");
+     //   surfaceScannerLeft = hwmap.get(ColorSensor.class, "surface_scanner_left");
+     //   surfaceScannerRight = hwmap.get(ColorSensor.class, "surface_scanner_right");
     }
     private void initState(){
         leftDrive.setPower(0);
@@ -50,11 +50,11 @@ public class HardwareBot {
         //todo find moveFoundation init position
         //todo find grabber init position
     // turns on color sensor led if its off
-        if (surfaceScannerLeft instanceof SwitchableLight) {
+      /*  if (surfaceScannerLeft instanceof SwitchableLight) {
             ((SwitchableLight) surfaceScannerLeft).enableLight(true);
         }
         if (surfaceScannerRight instanceof SwitchableLight) {
             ((SwitchableLight) surfaceScannerRight).enableLight(true);
-        }
+        }*/
     }
 }
