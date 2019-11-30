@@ -72,14 +72,29 @@ public class TestLinearOpMode extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            driveTest(gamepad1);
+            motorTest(gamepad1);
             servoTest(gamepad2);
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
         }
     }
-    //uses left and right stick
+// uses a, and y buttons + buttons used in driveTest
+    private void motorTest(Gamepad gp){
+        if (gp.a){
+            bot.leftLift.setPower(0.4);
+            bot.rightLift.setPower(0.4);
+        }else if(gp.y){
+            bot.leftLift.setPower(-0.4);
+            bot.rightLift.setPower(-0.4);
+        }else{
+            bot.leftLift.setPower(0);
+            bot.rightLift.setPower(0);
+        }
+
+        driveTest(gp);
+    }
+//uses left and right stick
     private void driveTest(Gamepad gp){
         double drive = -gp.left_stick_y;
         double turn = gp.left_stick_x;
@@ -93,7 +108,8 @@ public class TestLinearOpMode extends LinearOpMode {
 
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
     }
-    // uses
+
+// uses left/right bumpers, triggers and dpad
     private void servoTest(Gamepad gp){
         double leftFoundationPos = bot.leftMoveFoundation.getPosition();
         double rightFoundtaionPos = bot.rightMoveFoundation.getPosition();
