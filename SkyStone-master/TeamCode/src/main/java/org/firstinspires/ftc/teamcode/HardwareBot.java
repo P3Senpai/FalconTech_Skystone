@@ -1,15 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 public class HardwareBot {
     // strafe drive moves the robot in the horizontal direction
-    public DcMotor leftDrive, rightDrive, strafeDrive, lift;
-    //public Servo moveFoundation, grabber;
+    public DcMotor leftDrive, rightDrive, strafeDrive, leftLift, rightLift;
+    public Servo leftMoveFoundation, rightMoveFoundation, grabber;
     //public ColorSensor surfaceScannerLeft, surfaceScannerRight;
 
     public HardwareBot(){} //todo should i add an option for different settings?
@@ -31,12 +30,16 @@ public class HardwareBot {
         leftDrive = hwmap.get(DcMotor.class, "left_drive");
         rightDrive = hwmap.get(DcMotor.class, "right_drive");
         strafeDrive = hwmap.get(DcMotor.class, "strafe_drive");
-      //  lift = hwmap.get(DcMotor.class, "lift");
+        leftLift = hwmap.get(DcMotor.class, "left_lift");
+        rightLift = hwmap.get(DcMotor.class, "right_lift");
 
         // Set motor direction
+        leftLift.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightLift.setDirection(DcMotorSimple.Direction.REVERSE);
     /* Init servos */
-     //   moveFoundation = hwmap.get(Servo.class, "move_foundation");
-     //   grabber = hwmap.get(Servo.class, "grabber");
+        leftMoveFoundation = hwmap.get(Servo.class, "left_foundation");
+        rightMoveFoundation = hwmap.get(Servo.class, "right_foundation");
+        grabber = hwmap.get(Servo.class, "grabber");
 
     /* Init sensors */
      //   surfaceScannerLeft = hwmap.get(ColorSensor.class, "surface_scanner_left");
@@ -46,8 +49,10 @@ public class HardwareBot {
         leftDrive.setPower(0);
         rightDrive.setPower(0);
         strafeDrive.setPower(0);
-        lift.setPower(0);
-        //todo find moveFoundation init position
+        leftLift.setPower(0);
+        rightLift.setPower(0);
+        //todo find leftMoveFoundation init position
+        //todo find rightMoveFoundation init position
         //todo find grabber init position
     // turns on color sensor led if its off
       /*  if (surfaceScannerLeft instanceof SwitchableLight) {
