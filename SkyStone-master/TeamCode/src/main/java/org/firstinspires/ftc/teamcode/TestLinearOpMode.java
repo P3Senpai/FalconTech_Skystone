@@ -75,6 +75,7 @@ public class TestLinearOpMode extends LinearOpMode {
             motorTest(gamepad1);
             servoTest(gamepad2);
 
+
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
@@ -99,8 +100,8 @@ public class TestLinearOpMode extends LinearOpMode {
     private void driveTest(Gamepad gp){
         double drive = -gp.left_stick_y;
         double turn = gp.left_stick_x;
-        double leftPower = Range.clip(drive - turn, -1,1);
-        double rightPower = Range.clip(drive + turn, -1,1);
+        double leftPower = Range.clip(drive + turn, -1,1);
+        double rightPower = Range.clip(drive - turn, -1,1);
         double strafePower = Range.clip(gp.right_stick_x, -1,1);
 
         bot.leftDrive.setPower(leftPower);

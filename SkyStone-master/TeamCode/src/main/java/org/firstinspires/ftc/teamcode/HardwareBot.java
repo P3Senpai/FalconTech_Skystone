@@ -34,6 +34,8 @@ public class HardwareBot {
         rightLift = hwmap.get(DcMotor.class, "right_lift");
 
         // Set motor direction
+        leftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         leftLift.setDirection(DcMotorSimple.Direction.FORWARD);
         rightLift.setDirection(DcMotorSimple.Direction.REVERSE);
     /* Init servos */
