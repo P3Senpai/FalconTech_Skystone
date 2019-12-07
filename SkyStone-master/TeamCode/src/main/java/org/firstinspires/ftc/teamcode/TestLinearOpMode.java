@@ -74,6 +74,7 @@ public class TestLinearOpMode extends LinearOpMode {
 
             motorTest(gamepad1);
             servoTest(gamepad2);
+
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
@@ -109,24 +110,10 @@ public class TestLinearOpMode extends LinearOpMode {
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
     }
 
-// uses left/right bumpers, triggers and dpad
+// uses left/right dpad
     private void servoTest(Gamepad gp){
-        double leftFoundationPos = bot.leftMoveFoundation.getPosition();
-        double rightFoundtaionPos = bot.rightMoveFoundation.getPosition();
         double grabberPos = bot.grabber.getPosition();
 
-    // left foundation servo position checker
-        if (gp.left_bumper){
-            bot.leftMoveFoundation.setPosition(leftFoundationPos + 0.01);
-        }else if(gp.right_bumper){
-            bot.leftMoveFoundation.setPosition(leftFoundationPos - 0.01);
-        }
-    // right foundation servo position checker
-        if(gp.left_trigger != 0){
-            bot.rightMoveFoundation.setPosition(rightFoundtaionPos + 0.01);
-        }else if(gp.right_trigger != 0){
-            bot.rightMoveFoundation.setPosition(rightFoundtaionPos - 0.01);
-        }
     // grabber servo position checker
         if (gp.dpad_left){
             bot.grabber.setPosition(grabberPos + 0.01);

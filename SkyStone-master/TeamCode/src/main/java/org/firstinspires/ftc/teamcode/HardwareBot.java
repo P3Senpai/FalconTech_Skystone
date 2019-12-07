@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class HardwareBot {
     // strafe drive moves the robot in the horizontal direction
     public DcMotor leftDrive, rightDrive, strafeDrive, leftLift, rightLift;
-    public Servo leftMoveFoundation, rightMoveFoundation, grabber;
+    public Servo  grabber;
     //public ColorSensor surfaceScannerLeft, surfaceScannerRight;
 
     public HardwareBot(){} //todo should i add an option for different settings?
@@ -37,8 +37,6 @@ public class HardwareBot {
         leftLift.setDirection(DcMotorSimple.Direction.FORWARD);
         rightLift.setDirection(DcMotorSimple.Direction.REVERSE);
     /* Init servos */
-        leftMoveFoundation = hwmap.get(Servo.class, "left_foundation");
-        rightMoveFoundation = hwmap.get(Servo.class, "right_foundation");
         grabber = hwmap.get(Servo.class, "grabber");
 
     /* Init sensors */
@@ -51,8 +49,6 @@ public class HardwareBot {
         strafeDrive.setPower(0);
         leftLift.setPower(0);
         rightLift.setPower(0);
-        //todo find leftMoveFoundation init position
-        //todo find rightMoveFoundation init position
         //todo find grabber init position
     // turns on color sensor led if its off
       /*  if (surfaceScannerLeft instanceof SwitchableLight) {
