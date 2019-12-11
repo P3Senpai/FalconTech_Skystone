@@ -29,10 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -73,7 +71,7 @@ public class TestLinearOpMode extends LinearOpMode {
         while (opModeIsActive()) {
 
             motorTest(gamepad1);
-            servoTest(gamepad2);
+            servoTest(gamepad1);
 
 
             // Show the elapsed game time and wheel power.
@@ -81,14 +79,14 @@ public class TestLinearOpMode extends LinearOpMode {
             telemetry.update();
         }
     }
-// uses a, and y buttons + buttons used in driveTest
+// uses dpad up and down buttons used + buttons used in driveTest
     private void motorTest(Gamepad gp){
-        if (gp.a){
-            bot.leftLift.setPower(0.4);
-            bot.rightLift.setPower(0.4);
-        }else if(gp.y){
-            bot.leftLift.setPower(-0.4);
-            bot.rightLift.setPower(-0.4);
+        if (gp.dpad_up){
+            bot.leftLift.setPower(0.5);
+            bot.rightLift.setPower(0.5);
+        }else if(gp.dpad_down){
+            bot.leftLift.setPower(-0.5);
+            bot.rightLift.setPower(-0.5);
         }else{
             bot.leftLift.setPower(0);
             bot.rightLift.setPower(0);
@@ -99,16 +97,20 @@ public class TestLinearOpMode extends LinearOpMode {
 //uses left and right stick
     private void driveTest(Gamepad gp){
         double drive = -gp.left_stick_y;
-        double turn = gp.left_stick_x;
+        double turn = gp.right_stick_x;
         double leftPower = Range.clip(drive + turn, -1,1);
         double rightPower = Range.clip(drive - turn, -1,1);
-        double strafePower = Range.clip(gp.right_stick_x, -1,1);
+        double strafePower = Range.clip(gp.left_stick_x, -1,1);
 
-        bot.leftDrive.setPower(leftPower);
-        bot.rightDrive.setPower(rightPower);
+        bot.leftFrontDrive.setPower(leftPower);
+        bot.leftBackDrive.setPower(leftPower);
+        bot.rightFrontDrive.setPower(rightPower);
+        bot.rightBackDrive.setPower(rightPower);
+
         bot.strafeDrive.setPower(strafePower);
 
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+        telemetry.addData("Drive stick data", "left: %.2f --- right: %.2f", leftPower,rightPower);
+        telemetry.addData("Drive motors", "Left --- front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f  ---  Strafe %.2f", bot.leftFrontDrive.getPower(), bot.leftBackDrive.getPower(),bot.rightFrontDrive.getPower(), bot.rightBackDrive.getPower(), bot.strafeDrive.getPower() );
     }
 
 // uses left/right dpad
@@ -121,6 +123,7 @@ public class TestLinearOpMode extends LinearOpMode {
         }else if (gp.dpad_right){
             bot.grabber.setPosition(grabberPos - 0.01);
         }
+    telemetry.addData("Servo Position: ", grabberPos);
 
     }
     private void driveByVelocity(double inputData, double maxPower, double velocityForward, double velocitySideways){
@@ -146,8 +149,8 @@ public class TestLinearOpMode extends LinearOpMode {
         leftPower = power + sidewaysV;  // sideways velocity prevents drifting
         rightPower = power - sidewaysV; // sideways velocity prevents drifting
         // Set motor speeds
-        bot.leftDrive.setPower(leftPower);
-        bot.rightDrive.setPower(rightPower);
+        bot.leftFrontDrive.setPower(leftPower);
+        bot.rightFrontDrive.setPower(rightPower);
     }
     // uses x and y velocity to adjust turning in order to center it
     private void turnByVelocity(double inputData, double maxPower, int turn, double xAxisV, double yAxisV) {
@@ -167,7 +170,7 @@ public class TestLinearOpMode extends LinearOpMode {
         leftPower = power - error;  // as if error > 0 then leftPowerOutput > rightPowerOutput
         rightPower = power + error; // as if error < 0 then leftPowerOutput < rightPowerOutput
         // set drive power
-        bot.leftDrive.setPower(-leftPower * turn);    // turns left on default
-        bot.rightDrive.setPower(rightPower * turn);
+        bot.leftFrontDrive.setPower(-leftPower * turn);    // turns left on default
+        bot.rightFrontDrive.setPower(rightPower * turn);
     }
 }

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class HardwareBot {
     // strafe drive moves the robot in the horizontal direction
-    public DcMotor leftDrive, rightDrive, strafeDrive, leftLift, rightLift;
+    public DcMotor leftFrontDrive, rightFrontDrive,leftBackDrive, rightBackDrive, strafeDrive, leftLift, rightLift;
     public Servo  grabber;
     //public ColorSensor surfaceScannerLeft, surfaceScannerRight;
 
@@ -27,17 +27,22 @@ public class HardwareBot {
         HardwareMap hwmap = hardwareMap;
 
     /* Init motors */
-        leftDrive = hwmap.get(DcMotor.class, "left_drive");
-        rightDrive = hwmap.get(DcMotor.class, "right_drive");
+        leftFrontDrive = hwmap.get(DcMotor.class, "left_front_drive");
+        rightFrontDrive = hwmap.get(DcMotor.class, "right_front_drive");
+        leftBackDrive = hwmap.get(DcMotor.class, "left_back_drive");
+        rightBackDrive = hwmap.get(DcMotor.class, "right_back_drive");
         strafeDrive = hwmap.get(DcMotor.class, "strafe_drive");
         leftLift = hwmap.get(DcMotor.class, "left_lift");
         rightLift = hwmap.get(DcMotor.class, "right_lift");
 
         // Set motor direction
-        leftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftLift.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightLift.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFrontDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        leftLift.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightLift.setDirection(DcMotorSimple.Direction.FORWARD);
     /* Init servos */
         grabber = hwmap.get(Servo.class, "grabber");
 
@@ -46,8 +51,10 @@ public class HardwareBot {
      //   surfaceScannerRight = hwmap.get(ColorSensor.class, "surface_scanner_right");
     }
     private void initState(){
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
         strafeDrive.setPower(0);
         leftLift.setPower(0);
         rightLift.setPower(0);
