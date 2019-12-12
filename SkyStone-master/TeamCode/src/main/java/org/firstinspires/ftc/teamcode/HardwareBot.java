@@ -16,11 +16,15 @@ public class HardwareBot {
     /* By separating state from hardware we can by make multiple setting profiles for state init
      * For e.g. different init methods for teleOp and Autonomous
      */
-    public void init(HardwareMap hardwareMap){
+    public void init(HardwareMap hardwareMap, boolean isTeleop){
     /* Init the hardware's starting state*/
         initHardware(hardwareMap);
     /* Init the hardware's starting state*/
-        initState();
+        if(isTeleop){
+            initState();
+        }else{
+            initAutonomousState();
+        }
     }
 
     private void initHardware(HardwareMap hardwareMap){
@@ -39,7 +43,7 @@ public class HardwareBot {
         leftFrontDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         rightFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
         leftLift.setDirection(DcMotorSimple.Direction.REVERSE);
         rightLift.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -60,6 +64,35 @@ public class HardwareBot {
         rightLift.setPower(0);
         //todo find grabber init position
     // turns on color sensor led if its off
+      /*  if (surfaceScannerLeft instanceof SwitchableLight) {
+            ((SwitchableLight) surfaceScannerLeft).enableLight(false);
+        }
+        if (surfaceScannerRight instanceof SwitchableLight) {
+            ((SwitchableLight) surfaceScannerRight).enableLight(false);
+        }*/
+    }
+    private void initAutonomousState(){
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
+        strafeDrive.setPower(0);
+        leftLift.setPower(0);
+        rightLift.setPower(0);
+    // Sets motor Mode
+        //Reset encoder
+        leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //Run using encoder
+        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //todo find grabber init position
+    // turns on color sensor led if its on
       /*  if (surfaceScannerLeft instanceof SwitchableLight) {
             ((SwitchableLight) surfaceScannerLeft).enableLight(true);
         }

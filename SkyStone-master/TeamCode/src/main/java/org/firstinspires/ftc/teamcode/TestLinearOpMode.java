@@ -62,7 +62,7 @@ public class TestLinearOpMode extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        bot.init(hardwareMap);
+        bot.init(hardwareMap, true);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
@@ -79,6 +79,7 @@ public class TestLinearOpMode extends LinearOpMode {
             telemetry.update();
         }
     }
+
 // uses dpad up and down buttons used + buttons used in driveTest
     private void motorTest(Gamepad gp){
         if (gp.dpad_up){
@@ -94,6 +95,7 @@ public class TestLinearOpMode extends LinearOpMode {
 
         driveTest(gp);
     }
+
 //uses left and right stick
     private void driveTest(Gamepad gp){
         double drive = -gp.left_stick_y;
