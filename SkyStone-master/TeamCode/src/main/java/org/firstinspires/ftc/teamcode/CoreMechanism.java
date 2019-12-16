@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class CoreMechanism {
@@ -8,12 +9,12 @@ public class CoreMechanism {
 
 /* Lift Variables*/
     private final int GROUND_POSITION = -1; // todo find
-    // todo maybe add magnetic limit switch to auto find it
+// todo maybe add magnetic limit switch to automatically find it (starting position)
     private final int START_POSITION = 0; // todo find
     private final double LIFT_POWER = 0.5;
-    // should we code a controller button where it lifts to different block heights (Toggle)
 /* Grabber variables */
     private final double GRABBED_POSITION = -1; //todo find
+// todo Should we have two open positions? One for quick opening (better when getting blocks off the ground) and one for a wide release (better when putting stone on tower)
     private final double RELEASED_POSITION = -1; // todo find
     private boolean isGrabbed;
 
@@ -33,7 +34,10 @@ public class CoreMechanism {
     }
 
 /* Private Methods */
-    private void initForController(){}
+    private void initForController(){
+        bot.leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bot.rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
     private void initForEncoder(){}
 
 /* Public Methods */

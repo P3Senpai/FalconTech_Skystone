@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -28,12 +29,31 @@ public class DriveTrain {
         bot.strafeDrive.setPower(0);
     }
 
-    public String powerToString(){
-        return "test";
+    public String powerToString(){ //todo see if it works
+        return String.format("Drive motors", "Left --- front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f  ---  Strafe %.2f", bot.leftFrontDrive.getPower(), bot.leftBackDrive.getPower(),bot.rightFrontDrive.getPower(), bot.rightBackDrive.getPower(), bot.strafeDrive.getPower());
     }
 /* Private Methods */
-    private void initForController(){}
-    private void initForEncoder(){}
+    private void initForController(){
+        bot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bot.leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bot.rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+    private void initForEncoder(){
+    // Sets motor Mode
+        //Reset encoder
+        bot.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bot.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bot.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bot.strafeDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //Run using encoder
+        bot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bot.leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bot.strafeDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
 
 /* Public Methods */
     public void driveByController(Gamepad gp){

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+/* This class initializes all of the classes for the robot's components */
 public class Bot {
     private HardwareBot robot;
     private DriveTrain driveTrain;
