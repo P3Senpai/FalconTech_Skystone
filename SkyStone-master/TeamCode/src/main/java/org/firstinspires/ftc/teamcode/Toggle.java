@@ -7,8 +7,8 @@ import java.util.ArrayList;
  */
 
 class Toggle{
-    ArrayList<Boolean> previousState = new ArrayList<Boolean>();
-    static int counter;
+    private ArrayList<Boolean> previousState = new ArrayList<Boolean>();
+    private static int counter;
 
     /* Constructor */
     public void Toggle(){

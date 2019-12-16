@@ -62,7 +62,7 @@ public class TestLinearOpMode extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        bot.init(hardwareMap, true);
+        bot.init(true);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();

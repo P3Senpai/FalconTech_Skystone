@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class HardwareBot {
+    private HardwareMap hardwareMap; //todo THIS MIGHT NOT WORK
     // strafe drive moves the robot in the horizontal direction
     public DcMotor leftFrontDrive, rightFrontDrive,leftBackDrive, rightBackDrive, strafeDrive, leftLift, rightLift;
     public Servo  grabber;
@@ -16,9 +17,9 @@ public class HardwareBot {
     /* By separating state from hardware we can by make multiple setting profiles for state init
      * For e.g. different init methods for teleOp and Autonomous
      */
-    public void init(HardwareMap hardwareMap, boolean isTeleop){
+    public void init(boolean isTeleop){
     /* Init the hardware's starting state*/
-        initHardware(hardwareMap);
+        initHardware();
     /* Init the hardware's starting state*/
         if(isTeleop){
             initState();
@@ -27,7 +28,7 @@ public class HardwareBot {
         }
     }
 
-    private void initHardware(HardwareMap hardwareMap){
+    private void initHardware(){
         HardwareMap hwmap = hardwareMap;
 
     /* Init motors */
@@ -72,13 +73,6 @@ public class HardwareBot {
         }*/
     }
     private void initAutonomousState(){
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        strafeDrive.setPower(0);
-        leftLift.setPower(0);
-        rightLift.setPower(0);
     // Sets motor Mode
         //Reset encoder
         leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
