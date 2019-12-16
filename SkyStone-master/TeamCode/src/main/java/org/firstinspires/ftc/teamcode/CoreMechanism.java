@@ -38,7 +38,14 @@ public class CoreMechanism {
         bot.leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bot.rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
-    private void initForEncoder(){}
+    private void initForEncoder(){
+        //Reset encoders
+        bot.leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bot.rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        // Run using encoders
+        bot.leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bot.rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
 
 /* Public Methods */
     public void liftByController(Gamepad gp){
