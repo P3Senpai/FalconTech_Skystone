@@ -17,15 +17,15 @@ public class HardwareBot {
     /* By separating state from hardware we can by make multiple setting profiles for state init
      * For e.g. different init methods for teleOp and Autonomous
      */
-    public void init(boolean isTeleop){
+    public void init(){
     /* Init the hardware's starting state*/
         initHardware();
-    /* Init the hardware's starting state*/
-        if(isTeleop){
-            initState();
-        }else{
-            initAutonomousState();
-        }
+
+//        if(isTeleop){
+//            initState();
+//        }else{
+//            initAutonomousState();
+//        }
     }
 
     private void initHardware(){
@@ -55,15 +55,7 @@ public class HardwareBot {
      //   surfaceScannerLeft = hwmap.get(ColorSensor.class, "surface_scanner_left");
      //   surfaceScannerRight = hwmap.get(ColorSensor.class, "surface_scanner_right");
     }
-    private void initState(){
-    // turns on color sensor led if its off
-      /*  if (surfaceScannerLeft instanceof SwitchableLight) {
-            ((SwitchableLight) surfaceScannerLeft).enableLight(false);
-        }
-        if (surfaceScannerRight instanceof SwitchableLight) {
-            ((SwitchableLight) surfaceScannerRight).enableLight(false);
-        }*/
-    }
+
     private void initAutonomousState(){
     // turns on color sensor led if its on
       /*  if (surfaceScannerLeft instanceof SwitchableLight) {

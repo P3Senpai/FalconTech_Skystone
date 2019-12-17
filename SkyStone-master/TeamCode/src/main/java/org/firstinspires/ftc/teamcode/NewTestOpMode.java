@@ -42,7 +42,7 @@ public class NewTestOpMode extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private Toggle tgg = new Toggle();
-    private Bot robot = new Bot(true, tgg);
+    private Bot robot = new Bot( this, tgg, -1);
 
     @Override
     public void runOpMode() {
@@ -57,7 +57,7 @@ public class NewTestOpMode extends LinearOpMode {
         while (opModeIsActive()) {
 
             robot.getDriveTrain().driveByController(gamepad1);
-            telemetry.addLine(robot.getDriveTrain().powerToString()); //todo see if works
+            robot.getDriveTrain().powerToString(); //todo see if works
             robot.getLiftPlusGrabber().liftByController(gamepad1);
             //todo use once positions are found
 //            robot.getLiftPlusGrabber().grabByController(gamepad1);

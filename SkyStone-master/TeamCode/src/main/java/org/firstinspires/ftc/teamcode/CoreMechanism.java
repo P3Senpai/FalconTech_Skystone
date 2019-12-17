@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class CoreMechanism {
     private HardwareBot bot;
     private Toggle tgg;
+    private LinearOpMode opMode;
 
 /* Lift Variables*/
     private final int GROUND_POSITION = -1; // todo find
@@ -19,26 +21,31 @@ public class CoreMechanism {
     private boolean isGrabbed;
 
 /* Constructor */
-    public CoreMechanism(HardwareBot bot, Toggle tgg){
+    public CoreMechanism(HardwareBot bot, LinearOpMode opMode, Toggle tgg){
         this.bot = bot;
+        this.opMode = opMode;
         this.tgg = tgg;
-    // get grabber position
+    /* Init states */
+        //todo set all init states
+        bot.leftLift.setPower(0);
+        bot.rightLift.setPower(0);
+        isGrabbed();
+    }
+
+/* Private Methods */
+    private void isGrabbed(){
+    // set grabber position variable
         if (bot.grabber.getPosition() == GRABBED_POSITION)
             isGrabbed = true;
         else
             isGrabbed = false;
-
-    //todo set all init states
-        bot.leftLift.setPower(0);
-        bot.rightLift.setPower(0);
     }
-
-/* Private Methods */
-    private void initForController(){
+/* Public Methods */
+    public void initForController(){
         bot.leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bot.rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
-    private void initForEncoder(){
+    public void initForEncoder(){
         //Reset encoders
         bot.leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bot.rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -47,7 +54,7 @@ public class CoreMechanism {
         bot.rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-/* Public Methods */
+
     public void liftByController(Gamepad gp){
         if (gp.dpad_up){
             bot.leftLift.setPower(LIFT_POWER);

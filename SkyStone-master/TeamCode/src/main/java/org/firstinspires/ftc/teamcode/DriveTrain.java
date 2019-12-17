@@ -1,12 +1,17 @@
 package org.firstinspires.ftc.teamcode;
-
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+@Disabled
 public class DriveTrain {
     private HardwareBot bot;
+    private Toggle tgg;
+    private LinearOpMode opMode;
 
 /* Encoder variable initialization */
     private ElapsedTime runtime = new ElapsedTime();
@@ -19,9 +24,12 @@ public class DriveTrain {
     private static final double     TURN_SPEED              = 0.5;
 
 /* Constructor */
-    public DriveTrain(HardwareBot bot){
+    public DriveTrain(HardwareBot bot, LinearOpMode opMode, Toggle tgg){
         this.bot = bot;
-    //todo set all init states
+        this.opMode = opMode;
+        this.tgg = tgg;
+    /* Init states */
+        //todo set all init states
         bot.leftFrontDrive.setPower(0);
         bot.rightFrontDrive.setPower(0);
         bot.leftBackDrive.setPower(0);
@@ -29,18 +37,20 @@ public class DriveTrain {
         bot.strafeDrive.setPower(0);
     }
 
-    public String powerToString(){ //todo see if it works
-        return String.format("Drive motors", "Left --- front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f  ---  Strafe %.2f", bot.leftFrontDrive.getPower(), bot.leftBackDrive.getPower(),bot.rightFrontDrive.getPower(), bot.rightBackDrive.getPower(), bot.strafeDrive.getPower());
+    public void powerToString(){ //todo see if it works
+        opMode.telemetry.addData("Drive motors", "Left --- front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f  ---  Strafe %.2f", bot.leftFrontDrive.getPower(), bot.leftBackDrive.getPower(),bot.rightFrontDrive.getPower(), bot.rightBackDrive.getPower(), bot.strafeDrive.getPower());
     }
 /* Private Methods */
-    private void initForController(){
+
+/* Public Methods */
+    public void initForController(){
         bot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bot.leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bot.rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
-    private void initForEncoder(){
-    // Sets motor Mode
+    public void initForEncoder(){
+        // Sets motor Mode
         //Reset encoder
         bot.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -54,8 +64,6 @@ public class DriveTrain {
         bot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bot.strafeDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-
-/* Public Methods */
     public void driveByController(Gamepad gp){
         double drive = -gp.left_stick_y;
         double turn = gp.right_stick_x;
@@ -71,13 +79,71 @@ public class DriveTrain {
         bot.strafeDrive.setPower(strafePower);
         // todo add data for joysticks and motors
     }
-    public void driveByEncoder(){}
+
+    public void driveByEncoder(double speed, int leftCM, int rightCM, double timeoutS){
+        int newLeftTarget;
+        int newRightTarget;
+
+        // Ensure that the opmode is still active
+        if (opMode.opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            newLeftTarget = bot.leftFrontDrive.getCurrentPosition() + (int) (leftCM * COUNTS_PER_CM);
+            newRightTarget = bot.rightFrontDrive.getCurrentPosition() + (int) (rightCM * COUNTS_PER_CM);
+            bot.leftFrontDrive.setTargetPosition(newLeftTarget);
+            bot.rightFrontDrive.setTargetPosition(newRightTarget);
+
+            // Turn On RUN_TO_POSITION
+            bot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            bot.leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            bot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            bot.rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            bot.leftFrontDrive.setPower(Math.abs(speed));
+            bot.leftBackDrive.setPower(Math.abs(speed));
+            bot.rightFrontDrive.setPower(Math.abs(speed));
+            bot.rightBackDrive.setPower(Math.abs(speed));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+            while (opMode.opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (bot.leftFrontDrive.isBusy() && bot.rightFrontDrive.isBusy()
+                            && bot.leftBackDrive.isBusy() && bot.rightBackDrive.isBusy())) {
+
+                // Display it for the driver.
+                opMode.telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
+                opMode.telemetry.addData("Path2", "Running at %7d :%7d",
+                        bot.leftFrontDrive.getCurrentPosition(),
+                        bot.rightFrontDrive.getCurrentPosition());
+                opMode.telemetry.update();
+            }
+        // todo replace with init method BUT first see if it works
+            // Stop all motion;
+            bot.leftFrontDrive.setPower(0);
+            bot.rightFrontDrive.setPower(0);
+            bot.leftBackDrive.setPower(0);
+            bot.rightBackDrive.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            bot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            bot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            bot.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            bot.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            //  sleep(250);   // optional pause after each move
+        }
+    }
     public void strafeByEncoder(){}
     public void turnByAngle(){}
     public boolean driveAlignLine(){return false;}
     public boolean strafeAlignLine(){return false;}
-
-
     private void driveByVelocity(double inputData, double maxPower, double velocityForward, double velocitySideways){
         // Set up variables
         double power, leftPower, rightPower, forwardV, sidewaysV, threshold, powerPercentWeight, sidewaysPercentWeight;
