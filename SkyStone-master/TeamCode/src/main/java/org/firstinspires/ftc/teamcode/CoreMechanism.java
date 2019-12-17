@@ -81,7 +81,14 @@ public class CoreMechanism {
     }
 // true if you want 'toGrab' and false if you want to release (not 'toGrab')
     public void grab(boolean toGrab){
-        double position = (toGrab)?GRABBED_POSITION:RELEASED_POSITION_HALF; //todo add check for variable release position (DEPENDS ON MAGNETIC SENSOR)
+        double position;
+        if(toGrab){
+            position = GRABBED_POSITION;
+        }else{
+            //todo change if it magnetic sensor added
+            boolean isBelowStartingPosition =(bot.leftLift.getCurrentPosition() < START_POSITION && bot.rightLift.getCurrentPosition() < START_POSITION);
+            position = (isBelowStartingPosition)?RELEASED_POSITION_HALF:RELEASED_POSITION_FULL;
+        }
         isGrabbed = toGrab;
         bot.grabber.setPosition(position);
     }
