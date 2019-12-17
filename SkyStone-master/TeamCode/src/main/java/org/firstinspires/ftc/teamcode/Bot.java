@@ -50,6 +50,7 @@ public class Bot {
                 break;
         }
     }
+
     //todo configure color sensors
     private void enableColorSensors(boolean turnOn){
         if (!turnOn){

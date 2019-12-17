@@ -80,18 +80,18 @@ public class DriveTrain {
         // todo add data for joysticks and motors
     }
 
-    public void driveByEncoder(double speed, int leftCM, int rightCM, double timeoutS){
-        int newLeftTarget;
-        int newRightTarget;
+    public void driveByEncoder(double speed, int distanceCM, double timeoutS){
+        int newTarget;
 
         // Ensure that the opmode is still active
         if (opMode.opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = bot.leftFrontDrive.getCurrentPosition() + (int) (leftCM * COUNTS_PER_CM);
-            newRightTarget = bot.rightFrontDrive.getCurrentPosition() + (int) (rightCM * COUNTS_PER_CM);
-            bot.leftFrontDrive.setTargetPosition(newLeftTarget);
-            bot.rightFrontDrive.setTargetPosition(newRightTarget);
+            newTarget = bot.leftFrontDrive.getCurrentPosition() + (int) (distanceCM * COUNTS_PER_CM);
+            bot.leftFrontDrive.setTargetPosition(newTarget);
+            bot.leftBackDrive.setTargetPosition(newTarget);
+            bot.rightFrontDrive.setTargetPosition(newTarget);
+            bot.rightBackDrive.setTargetPosition(newTarget);
 
             // Turn On RUN_TO_POSITION
             bot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -107,18 +107,13 @@ public class DriveTrain {
             bot.rightBackDrive.setPower(Math.abs(speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opMode.opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
                     (bot.leftFrontDrive.isBusy() && bot.rightFrontDrive.isBusy()
                             && bot.leftBackDrive.isBusy() && bot.rightBackDrive.isBusy())) {
 
                 // Display it for the driver.
-                opMode.telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
+                opMode.telemetry.addData("Path1", "Running to %7d", newTarget);
                 opMode.telemetry.addData("Path2", "Running at %7d :%7d",
                         bot.leftFrontDrive.getCurrentPosition(),
                         bot.rightFrontDrive.getCurrentPosition());
@@ -132,15 +127,36 @@ public class DriveTrain {
             bot.rightBackDrive.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            bot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            bot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            bot.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            bot.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            initForEncoder();
 
-            //  sleep(250);   // optional pause after each move
+//              sleep(250);   // optional pause after each move
         }
     }
-    public void strafeByEncoder(){}
+    public void strafeByEncoder(double speed, double distanceCM, double timeOutS){
+        if (opMode.opModeIsActive()){
+        // Set target distance
+            int newTarget = bot.strafeDrive.getCurrentPosition() + (int) (distanceCM * COUNTS_PER_CM);
+            bot.strafeDrive.setTargetPosition(newTarget);
+        // Run to position
+            bot.strafeDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        // reset runtime and start motion
+            runtime.reset();
+            bot.strafeDrive.setPower(Math.abs(speed));
+        // keep looping while we are still active, and there is time left, and the motor is running.
+            while(opMode.opModeIsActive() && runtime.seconds() < timeOutS
+            && bot.strafeDrive.isBusy()){
+                // Display it for the driver.
+                opMode.telemetry.addData("Path1", "Running to %7d", newTarget);
+                opMode.telemetry.addData("Path2", "Running at %7d", bot.strafeDrive.getCurrentPosition());
+                opMode.telemetry.update();
+            }
+        // Stop motor
+            bot.strafeDrive.setPower(0);
+        // Turn off RUN_TO_POSITION
+            initForEncoder();
+//              sleep(250);   // optional pause after each move
+        }
+    }
     public void turnByAngle(){}
     public boolean driveAlignLine(){return false;}
     public boolean strafeAlignLine(){return false;}

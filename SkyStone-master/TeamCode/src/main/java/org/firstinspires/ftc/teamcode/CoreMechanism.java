@@ -10,14 +10,17 @@ public class CoreMechanism {
     private LinearOpMode opMode;
 
 /* Lift Variables*/
-    private final int GROUND_POSITION = -1; // todo find
 // todo maybe add magnetic limit switch to automatically find it (starting position)
-    private final int START_POSITION = 0; // todo find
+    private final int START_POSITION = 0; // this is the position when A. the phone camera can scan B. the release will change from half to full or vice versa
+    private final int MIN_HEIGHT = -1; // todo find (some negative value below the start position)
+    private final int MAX_HEIGHT = -1; // todo find (some positive value above the start position)
     private final double LIFT_POWER = 0.5;
 /* Grabber variables */
     private final double GRABBED_POSITION = -1; //todo find
-// todo Should we have two open positions? One for quick opening (better when getting blocks off the ground) and one for a wide release (better when putting stone on tower)
-    private final double RELEASED_POSITION = -1; // todo find
+    // faster when picking up stones off the ground
+    private final double RELEASED_POSITION_HALF = -1; // todo find
+    // safer when putting stones on tower
+    private final double RELEASED_POSITION_FULL = -1; // todo find
     private boolean isGrabbed;
 
 /* Constructor */
@@ -78,7 +81,7 @@ public class CoreMechanism {
     }
 // true if you want 'toGrab' and false if you want to release (not 'toGrab')
     public void grab(boolean toGrab){
-        double position = (toGrab)?GRABBED_POSITION:RELEASED_POSITION;
+        double position = (toGrab)?GRABBED_POSITION:RELEASED_POSITION_HALF; //todo add check for variable release position (DEPENDS ON MAGNETIC SENSOR)
         isGrabbed = toGrab;
         bot.grabber.setPosition(position);
     }
