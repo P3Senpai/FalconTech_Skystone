@@ -10,6 +10,8 @@ public class HardwareBot {
     // strafe drive moves the robot in the horizontal direction
     public DcMotor leftFrontDrive, rightFrontDrive,leftBackDrive, rightBackDrive, strafeDrive, leftLift, rightLift;
     public Servo  grabber;
+    public final int BLUE_VALUE = -1; // todo find
+    public final int RED_VALUE = -1; // todo find
     //public ColorSensor surfaceScannerLeft, surfaceScannerRight;
 
     public HardwareBot(){} //todo should i add an option for different settings?

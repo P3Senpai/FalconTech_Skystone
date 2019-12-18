@@ -157,21 +157,38 @@ public class DriveTrain {
 //              sleep(250);   // optional pause after each move
         }
     }
-    public void turnByAngle(){}
-    public boolean isOnLine(ColorSensor leftSensor, ColorSensor rightSensor){
-        int blueValue = -1; //todo find color value
-        int redValue = -1;  //todo find color value
-        boolean isOnBlueLine = leftSensor.blue() == blueValue || rightSensor.blue() == blueValue; //todo see how color sensor works
-        boolean isOnRedLine = leftSensor.red() == redValue || rightSensor.red() == redValue;
+    public void turnByAngle(double speed, double angle, int turnLeft, double timeOuts){
 
+    }
+    public boolean isOnLine(ColorSensor leftSensor, ColorSensor rightSensor){
+        boolean isOnBlueLine = leftSensor.blue() >= bot.BLUE_VALUE || rightSensor.blue() >= bot.BLUE_VALUE; //todo see how color sensor works
+        boolean isOnRedLine = leftSensor.red() >= bot.RED_VALUE || rightSensor.red() >= bot.RED_VALUE;
         return isOnBlueLine || isOnRedLine;
     }
+// region Both alignLine methods will only be useful if they can be done at the same time as driving and without need to stop the robot to align itself
     public void driveAlignLine(ColorSensor leftSensor, ColorSensor rightSensor){
-
+        boolean isLeftSensorOnLine = leftSensor.blue() >= bot.BLUE_VALUE || leftSensor.red() >= bot.RED_VALUE;
+        boolean isRightSensorOnLine = rightSensor.blue() >= bot.RED_VALUE || rightSensor.red() >= bot.RED_VALUE;
+        while(!isLeftSensorOnLine || !isRightSensorOnLine){
+            if (!isLeftSensorOnLine){
+                //turn left
+                //todo complete
+            }else if(!isRightSensorOnLine){
+                // turn right
+                //todo complete
+            }
+            // gets the new values
+            isLeftSensorOnLine = leftSensor.blue() >= bot.BLUE_VALUE || leftSensor.red() >= bot.RED_VALUE;
+            isRightSensorOnLine = rightSensor.blue() >= bot.RED_VALUE || rightSensor.red() >= bot.RED_VALUE;
+        }
     }
     public void strafeAlignLine(ColorSensor leftSensor, ColorSensor rightSensor){
+        boolean isOnBlueLine = leftSensor.blue() >= bot.BLUE_VALUE || rightSensor.blue() >= bot.BLUE_VALUE;
+        boolean isOnRedLine = leftSensor.red() >= bot.RED_VALUE || rightSensor.red() >= bot.RED_VALUE;
 
     }
+// endregion
+    
     private void driveByVelocity(double inputData, double maxPower, double velocityForward, double velocitySideways){
         // Set up variables
         double power, leftPower, rightPower, forwardV, sidewaysV, threshold, powerPercentWeight, sidewaysPercentWeight;
