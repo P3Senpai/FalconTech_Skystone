@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Disabled
+
 public class DriveTrain {
     private HardwareBot bot;
     private Toggle tgg;
@@ -157,8 +158,20 @@ public class DriveTrain {
         }
     }
     public void turnByAngle(){}
-    public boolean driveAlignLine(){return false;}
-    public boolean strafeAlignLine(){return false;}
+    public boolean isOnLine(ColorSensor leftSensor, ColorSensor rightSensor){
+        int blueValue = -1; //todo find color value
+        int redValue = -1;  //todo find color value
+        boolean isOnBlueLine = leftSensor.blue() == blueValue || rightSensor.blue() == blueValue; //todo see how color sensor works
+        boolean isOnRedLine = leftSensor.red() == redValue || rightSensor.red() == redValue;
+
+        return isOnBlueLine || isOnRedLine;
+    }
+    public void driveAlignLine(ColorSensor leftSensor, ColorSensor rightSensor){
+
+    }
+    public void strafeAlignLine(ColorSensor leftSensor, ColorSensor rightSensor){
+
+    }
     private void driveByVelocity(double inputData, double maxPower, double velocityForward, double velocitySideways){
         // Set up variables
         double power, leftPower, rightPower, forwardV, sidewaysV, threshold, powerPercentWeight, sidewaysPercentWeight;
