@@ -55,14 +55,15 @@ public class TestLinearOpMode extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private HardwareBot bot = new HardwareBot();
+    private Toggle tgg = new Toggle();
+    private HardwareBot bot = new HardwareBot(this, tgg, "TeleOp",hardwareMap);
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        bot.init(true);
+        bot.init(hardwareMap);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
@@ -120,10 +121,19 @@ public class TestLinearOpMode extends LinearOpMode {
         double grabberPos = bot.grabber.getPosition();
 
     // grabber servo position checker
-        if (gp.dpad_left){
-            bot.grabber.setPosition(grabberPos + 0.01);
-        }else if (gp.dpad_right){
-            bot.grabber.setPosition(grabberPos - 0.01);
+//        if (gp.dpad_left){
+//            bot.grabber.setPosition(grabberPos + 0.01);
+//        }else if (gp.dpad_right){
+//            bot.grabber.setPosition(grabberPos - 0.01);
+//        }
+        if (tgg.toggle(gp.x)){
+            if (bot.GRABBED_POSITION == grabberPos){
+                bot.grabber.setPosition(bot.RELEASED_POSITION_HALF);
+            }else if(bot.RELEASED_POSITION_HALF == grabberPos){
+                bot.grabber.setPosition(bot.RELEASED_POSITION_FULL);
+            }else if(bot.RELEASED_POSITION_FULL == grabberPos){
+                bot.grabber.setPosition(bot.GRABBED_POSITION);
+            }
         }
     telemetry.addData("Servo Position: ", grabberPos);
 

@@ -42,7 +42,7 @@ public class NewTestOpMode extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private Toggle tgg = new Toggle();
-    private Bot robot = new Bot( this, tgg, -1);
+    private HardwareBot robot = new HardwareBot(this, tgg, "TeleOp",hardwareMap);
 
     @Override
     public void runOpMode() {
@@ -50,19 +50,22 @@ public class NewTestOpMode extends LinearOpMode {
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
+        robot.init(hardwareMap); // this needs to run in the
+
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            robot.getDriveTrain().driveByController(gamepad1);
-            robot.getDriveTrain().powerToString(); //todo see if works
-            robot.getLiftPlusGrabber().liftByController(gamepad1);
+//            robot.getDriveTrain().driveByController(gamepad1);
+//            robot.getDriveTrain().powerToString(); //todo see if works
+//            robot.getLiftPlusGrabber().liftByController(gamepad1);
             //todo use once positions are found
 //            robot.getLiftPlusGrabber().grabByController(gamepad1);
+
         // temporary (will both perform motion and return a position value)
-            telemetry.addData("Grabber Position", robot.getLiftPlusGrabber().testGrabFind(gamepad1));
+//            telemetry.addData("Grabber Position", robot.getLiftPlusGrabber().testGrabFind(gamepad1));
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());

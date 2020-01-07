@@ -16,11 +16,11 @@ public class CoreMechanism {
     private final int MAX_HEIGHT = -1; // todo find (some positive value above the start position)
     private final double LIFT_POWER = 0.5;
 /* Grabber variables */
-    private final double GRABBED_POSITION = -1; //todo find
+    private final double GRABBED_POSITION = 0.2;
     // faster when picking up stones off the ground
-    private final double RELEASED_POSITION_HALF = -1; // todo find
+    private final double RELEASED_POSITION_HALF = 0.4183;
     // safer when putting stones on tower
-    private final double RELEASED_POSITION_FULL = -1; // todo find
+    private final double RELEASED_POSITION_FULL = 0.7894;
     private boolean isGrabbed;
 
 /* Constructor */

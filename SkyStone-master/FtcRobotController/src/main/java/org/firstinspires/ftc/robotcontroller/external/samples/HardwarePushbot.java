@@ -68,9 +68,7 @@ public class HardwarePushbot
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
-    public HardwarePushbot(){
-
-    }
+    public HardwarePushbot(){}
 
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
