@@ -23,11 +23,7 @@ public class HardwareBot{
     public final double RELEASED_POSITION_FULL = 0.7894;
 
 
-    public HardwareBot(LinearOpMode opMode,Toggle tgg, String initProfile, HardwareMap hwmap){
-//        this.driveTrain = new DriveTrain(this, opMode, tgg);
-//        this.liftPlusGrabber = new CoreMechanism(this, opMode,tgg);
-//        initProfiles(initProfile);
-    }
+    public HardwareBot(){}
 
     public DriveTrain getDriveTrain() {
         return driveTrain;
