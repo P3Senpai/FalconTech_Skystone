@@ -35,11 +35,11 @@ public class DriveTrain{
         bot.rightFrontDrive.setPower(0);
         bot.leftBackDrive.setPower(0);
         bot.rightBackDrive.setPower(0);
-        bot.strafeDrive.setPower(0);
+
     }
 
     public void powerToString(){ //todo see if it works
-        opMode.telemetry.addData("Drive motors", "Left --- front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f  ---  Strafe %.2f", bot.leftFrontDrive.getPower(), bot.leftBackDrive.getPower(),bot.rightFrontDrive.getPower(), bot.rightBackDrive.getPower(), bot.strafeDrive.getPower());
+        opMode.telemetry.addData("Drive motors", "Left --- front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f", bot.leftFrontDrive.getPower(), bot.leftBackDrive.getPower(),bot.rightFrontDrive.getPower(), bot.rightBackDrive.getPower());
     }
 /* Private Methods */
 
@@ -57,13 +57,13 @@ public class DriveTrain{
         bot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bot.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bot.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bot.strafeDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         //Run using encoder
         bot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bot.leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bot.strafeDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
     public void driveByController(Gamepad gp){
         double drive = -gp.left_stick_y;
@@ -77,7 +77,7 @@ public class DriveTrain{
         bot.rightFrontDrive.setPower(rightPower);
         bot.rightBackDrive.setPower(rightPower);
 
-        bot.strafeDrive.setPower(strafePower);
+
         // todo add data for joysticks and motors
     }
 
@@ -133,31 +133,7 @@ public class DriveTrain{
 //              sleep(250);   // optional pause after each move
         }
     }
-    public void strafeByEncoder(double speed, double distanceCM, double timeOutS){
-        if (opMode.opModeIsActive()){
-        // Set target distance
-            int newTarget = bot.strafeDrive.getCurrentPosition() + (int) (distanceCM * COUNTS_PER_CM);
-            bot.strafeDrive.setTargetPosition(newTarget);
-        // Run to position
-            bot.strafeDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        // reset runtime and start motion
-            runtime.reset();
-            bot.strafeDrive.setPower(Math.abs(speed));
-        // keep looping while we are still active, and there is time left, and the motor is running.
-            while(opMode.opModeIsActive() && runtime.seconds() < timeOutS
-            && bot.strafeDrive.isBusy()){
-                // Display it for the driver.
-                opMode.telemetry.addData("Path1", "Running to %7d", newTarget);
-                opMode.telemetry.addData("Path2", "Running at %7d", bot.strafeDrive.getCurrentPosition());
-                opMode.telemetry.update();
-            }
-        // Stop motor
-            bot.strafeDrive.setPower(0);
-        // Turn off RUN_TO_POSITION
-            initForEncoder();
-//              sleep(250);   // optional pause after each move
-        }
-    }
+
     public void turnByAngle(double speed, double angle, int turnLeft, double timeOuts){
 
     }

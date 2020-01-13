@@ -78,6 +78,7 @@ public class TesterTeleOp extends LinearOpMode {
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
+            tgg.reset();
         }
     }
 
@@ -103,17 +104,17 @@ public class TesterTeleOp extends LinearOpMode {
         double turn = gp.right_stick_x;
         double leftPower = Range.clip(drive + turn, -1,1);
         double rightPower = Range.clip(drive - turn, -1,1);
-        double strafePower = Range.clip(gp.left_stick_x, -1,1);
+
 
         bot.leftFrontDrive.setPower(leftPower);
         bot.leftBackDrive.setPower(leftPower);
         bot.rightFrontDrive.setPower(rightPower);
         bot.rightBackDrive.setPower(rightPower);
 
-        bot.strafeDrive.setPower(strafePower);
+        strafeDrive(gp);
 
         telemetry.addData("Drive stick data", "left: %.2f --- right: %.2f", leftPower,rightPower);
-        telemetry.addData("Drive motors", "Left --- front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f  ---  Strafe %.2f", bot.leftFrontDrive.getPower(), bot.leftBackDrive.getPower(),bot.rightFrontDrive.getPower(), bot.rightBackDrive.getPower(), bot.strafeDrive.getPower() );
+        telemetry.addData("Drive motors", "Left --- front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f", bot.leftFrontDrive.getPower(), bot.leftBackDrive.getPower(),bot.rightFrontDrive.getPower(), bot.rightBackDrive.getPower());
     }
 
 // uses left/right dpad
@@ -137,6 +138,13 @@ public class TesterTeleOp extends LinearOpMode {
         }
     telemetry.addData("Servo Position: ", grabberPos);
 
+    }
+    private void strafeDrive(Gamepad gp){
+        double strafePower = Range.clip(gp.left_stick_x, -1,1);
+        bot.leftFrontDrive.setPower(strafePower);
+        bot.leftBackDrive.setPower(-strafePower);
+        bot.rightFrontDrive.setPower(-strafePower);
+        bot.rightBackDrive.setPower(strafePower);
     }
     private void driveByVelocity(double inputData, double maxPower, double velocityForward, double velocitySideways){
         // Set up variables

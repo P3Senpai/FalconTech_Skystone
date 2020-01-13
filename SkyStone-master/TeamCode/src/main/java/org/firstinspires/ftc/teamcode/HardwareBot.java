@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class HardwareBot{
     // strafe drive moves the robot in the horizontal direction
-    public DcMotor leftFrontDrive, rightFrontDrive,leftBackDrive, rightBackDrive, strafeDrive, leftLift, rightLift;
+    public DcMotor leftFrontDrive, rightFrontDrive,leftBackDrive, rightBackDrive, leftLift, rightLift;
     public Servo  grabber;
 //    public ColorSensor surfaceScannerLeft, surfaceScannerRight;
     private HardwareMap hwmap = null;
@@ -93,7 +93,6 @@ public class HardwareBot{
         rightFrontDrive = hwmap.get(DcMotor.class, "right_front_drive");
         leftBackDrive = hwmap.get(DcMotor.class, "left_back_drive");
         rightBackDrive = hwmap.get(DcMotor.class, "right_back_drive");
-        strafeDrive = hwmap.get(DcMotor.class, "strafe_drive");
         leftLift = hwmap.get(DcMotor.class, "left_lift");
         rightLift = hwmap.get(DcMotor.class, "right_lift");
 
