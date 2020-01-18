@@ -111,7 +111,7 @@ public class TesterAuto extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-
+        telemetry.addData("here","here");
         vuforia.runOpMode();
         telemetry.addData("forward", vuforia.getForward());
         // Step through each leg of the path,
