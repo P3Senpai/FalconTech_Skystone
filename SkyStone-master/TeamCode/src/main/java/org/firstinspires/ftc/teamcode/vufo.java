@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -80,9 +81,8 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="vufo", group="Pushbot")
 //@Disabled
-public class vufo extends LinearOpMode {
+public class vufo{
     // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:
     // 1) Camera Source.  Valid choices are:  BACK (behind screen) or FRONT (selfie side)
     // 2) Phone Orientation. Choices are: PHONE_IS_PORTRAIT = true (portrait) or PHONE_IS_PORTRAIT = false (landscape)
@@ -133,18 +133,22 @@ public class vufo extends LinearOpMode {
     private float phoneXRotate    = 0;
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
+    private HardwareMap hwmap = null;
 
     private float sideways = 0;
     private float up = 0;
     private float forward = 0;
 
-    @Override public void runOpMode() {
+    public vufo(){}
+
+    public void run(HardwareMap hardwareMap) {
+        hwmap = hardwareMap;
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
          * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
          * If no camera monitor is desired, use the parameter-less constructor instead (commented out below).
          */
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        int cameraMonitorViewId = hwmap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwmap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
@@ -312,21 +316,17 @@ public class vufo extends LinearOpMode {
         // CONSEQUENTLY do not put any driving commands in this loop.
         // To restore the normal opmode structure, just un-comment the following line:
 
-        waitForStart();
-
         // Note: To use the remote camera preview:
         // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
         // Tap the preview window to receive a fresh image.
 
         targetsSkyStone.activate();
 
-        while (!isStopRequested()) {
 
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
-                    telemetry.addData("Visible Target", trackable.getName());
                     targetVisible = true;
 
                     // getUpdatedRobotLocation() will return null if no new information is available since
@@ -358,8 +358,6 @@ public class vufo extends LinearOpMode {
 //            telemetry.addData("sideways", sideways);
 //            telemetry.addData("forward", forward);
 //            telemetry.addData("up", up);
-            telemetry.update();
-        }
 
     }
 
