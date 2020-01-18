@@ -102,19 +102,14 @@ public class TesterTeleOp extends LinearOpMode {
     private void driveTest(Gamepad gp){
         double drive = -gp.left_stick_y;
         double turn = gp.right_stick_x;
-        double leftPower = Range.clip(drive + turn, -1,1);
-        double rightPower = Range.clip(drive - turn, -1,1);
+        double strafe = gp.left_stick_x;
+        double leftFrontPower = Range.clip(drive + strafe + turn, -1,1);
+        double leftBackPower = Range.clip(drive - strafe + turn, -1,1);
+        double rightFrontPower = Range.clip(drive - strafe- turn, -1,1);
+        double rightBackPower = Range.clip(drive + strafe- turn, -1,1);
 
-
-        bot.leftFrontDrive.setPower(leftPower);
-        bot.leftBackDrive.setPower(leftPower);
-        bot.rightFrontDrive.setPower(rightPower);
-        bot.rightBackDrive.setPower(rightPower);
-
-        strafeDrive(gp);
-
-        telemetry.addData("Drive stick data", "left: %.2f --- right: %.2f", leftPower,rightPower);
-        telemetry.addData("Drive motors", "Left --- front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f", bot.leftFrontDrive.getPower(), bot.leftBackDrive.getPower(),bot.rightFrontDrive.getPower(), bot.rightBackDrive.getPower());
+        telemetry.addData("Drive stick data", "left front: %.2f --- left back: %.2f --- right front: %.2f --- right back: %.2f", leftFrontPower, leftBackPower,rightFrontPower,rightBackPower);
+        telemetry.addData("Drive motors", "Left front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f", bot.leftFrontDrive.getPower(), bot.leftBackDrive.getPower(),bot.rightFrontDrive.getPower(), bot.rightBackDrive.getPower());
     }
 
 // uses left/right dpad
