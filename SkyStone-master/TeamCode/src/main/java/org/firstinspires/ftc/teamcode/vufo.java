@@ -320,7 +320,8 @@ public class vufo{
         // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
         // Tap the preview window to receive a fresh image.
 
-        targetsSkyStone.activate();
+        while(!targetVisible){
+            targetsSkyStone.activate();
 
 
             // check all the trackable targets to see which one (if any) is visible.
@@ -348,12 +349,13 @@ public class vufo{
 
                 // express the rotation of the robot in degrees.
                 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-                 // telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+                // telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
                 sideways = translation.get(2);
                 forward = translation.get(0);
                 up = translation.get(1);
                 targetsSkyStone.deactivate();
             }
+        }
 
 //            telemetry.addData("sideways", sideways);
 //            telemetry.addData("forward", forward);
