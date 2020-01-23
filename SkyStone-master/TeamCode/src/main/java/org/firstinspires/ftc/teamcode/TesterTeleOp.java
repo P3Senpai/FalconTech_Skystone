@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Test: Linear OpMode", group="Linear Opmode")
+@TeleOp(name="!Test: Linear OpMode", group="Linear Opmode")
 //@Disabled
 public class TesterTeleOp extends LinearOpMode {
 
@@ -84,6 +84,10 @@ public class TesterTeleOp extends LinearOpMode {
 
 // uses dpad up and down buttons used + buttons used in driveTest
     private void motorTest(Gamepad gp){
+        lift(gp);
+        driveTest(gp);
+    }
+    private void lift(Gamepad gp){
         if (gp.dpad_up){
             bot.leftLift.setPower(0.5);
             bot.rightLift.setPower(0.5);
@@ -95,20 +99,26 @@ public class TesterTeleOp extends LinearOpMode {
             bot.rightLift.setPower(0);
         }
 
-        driveTest(gp);
+        telemetry.addData("Lift ticks", "left: %.0f right: %.0f",(double)bot.leftLift.getCurrentPosition(),(double)bot.rightLift.getCurrentPosition());
     }
 
-//uses left and right stick
+//uses left and right stick and both triggers
     private void driveTest(Gamepad gp){
         double drive = -gp.left_stick_y;
         double turn = gp.right_stick_x;
-        double strafe = gp.left_stick_x;
+        double strafe = (gp.left_trigger > gp.right_trigger)? -gp.left_trigger: gp.right_trigger; // left trigger is between -1 and 0 right trigger is between 0 and 1
+
         double leftFrontPower = Range.clip(drive + strafe + turn, -1,1);
         double leftBackPower = Range.clip(drive - strafe + turn, -1,1);
-        double rightFrontPower = Range.clip(drive - strafe- turn, -1,1);
-        double rightBackPower = Range.clip(drive + strafe- turn, -1,1);
+        double rightFrontPower = Range.clip(drive - strafe - turn, -1,1);
+        double rightBackPower = Range.clip(drive + strafe - turn, -1,1);
 
-        telemetry.addData("Drive stick data", "left front: %.2f --- left back: %.2f --- right front: %.2f --- right back: %.2f", leftFrontPower, leftBackPower,rightFrontPower,rightBackPower);
+        bot.leftFrontDrive.setPower(leftFrontPower);
+        bot.leftBackDrive.setPower(leftBackPower);
+        bot.rightFrontDrive.setPower(rightFrontPower);
+        bot.rightBackDrive.setPower(rightBackPower);
+
+//        telemetry.addData("Drive stick data", "left front: %.2f --- left back: %.2f --- right front: %.2f --- right back: %.2f", leftFrontPower, leftBackPower,rightFrontPower,rightBackPower);
         telemetry.addData("Drive motors", "Left front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f", bot.leftFrontDrive.getPower(), bot.leftBackDrive.getPower(),bot.rightFrontDrive.getPower(), bot.rightBackDrive.getPower());
     }
 
@@ -125,11 +135,12 @@ public class TesterTeleOp extends LinearOpMode {
         if (tgg.toggle(gp.x)){
             if (bot.GRABBED_POSITION == grabberPos){
                 bot.grabber.setPosition(bot.RELEASED_POSITION_HALF);
-            }else if(bot.RELEASED_POSITION_HALF == grabberPos){
-                bot.grabber.setPosition(bot.RELEASED_POSITION_FULL);
             }else if(bot.RELEASED_POSITION_FULL == grabberPos){
                 bot.grabber.setPosition(bot.GRABBED_POSITION);
+            }else{
+                bot.grabber.setPosition(bot.RELEASED_POSITION_FULL);
             }
+
         }
     telemetry.addData("Servo Position: ", grabberPos);
 
