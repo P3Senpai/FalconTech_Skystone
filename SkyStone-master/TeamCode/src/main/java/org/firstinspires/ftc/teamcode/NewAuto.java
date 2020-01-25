@@ -64,7 +64,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="TEST Auto", group="Pushbot")
+@Autonomous(name="TEST AUTO", group="Pushbot")
 //@Disabled
 public class NewAuto extends LinearOpMode {
 
@@ -97,22 +97,28 @@ public class NewAuto extends LinearOpMode {
         robot.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         robot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Path0",  "Starting at %7d :%7d",
-                robot.leftFrontDrive.getCurrentPosition(),
-                robot.rightFrontDrive.getCurrentPosition());
-        telemetry.update();
+//        telemetry.addData("Path0",  "Starting at %7d :%7d",
+//                robot.leftFrontDrive.getCurrentPosition(),
+//                robot.rightFrontDrive.getCurrentPosition());
+//        telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         vuforia.run(hardwareMap);
-        telemetry.addData("forward", vuforia.getForward());
+        //telemetry.addData("forward IN", vuforia.getForward());
+        encoderDrive(DRIVE_SPEED, Math.abs(vuforia.getForward()), Math.abs(vuforia.getForward()), 20);
+        sleep(1000);
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
 //        encoderDrive(DRIVE_SPEED,  12,  12, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
@@ -192,6 +198,43 @@ public class NewAuto extends LinearOpMode {
             robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             //  sleep(250);   // optional pause after each move
+        }
+    }
+
+    public void encoderLift(){
+
+    }
+    public void encoderGrab(){
+
+    }
+    public void startUp(int timeoutS, int UP){
+        // UP is 1 if going up and -1 if going down
+        int liftLeftTarget;
+        int liftRightTarget;
+
+        if(opModeIsActive()){
+            liftLeftTarget = robot.leftLift.getCurrentPosition() + (int)(COUNTS_PER_MOTOR_REV * 1.2) * UP;
+            liftRightTarget = robot.rightLift.getCurrentPosition() + (int)(COUNTS_PER_MOTOR_REV * 1.2) * UP;
+
+            robot.leftLift.setTargetPosition(liftLeftTarget);
+            robot.rightLift.setTargetPosition(liftRightTarget);
+
+            robot.leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            runtime.reset();
+            robot.leftLift.setPower(Math.abs(.5) * UP);
+            robot.rightLift.setPower(Math.abs(.5) * UP);
+
+            while(opModeIsActive() && runtime.seconds() < timeoutS && robot.leftLift.isBusy() && robot.rightLift.isBusy()){
+
+            }
+            robot.leftLift.setPower(0);
+            robot.rightLift.setPower(0);
+
+            robot.leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         }
     }
 }
