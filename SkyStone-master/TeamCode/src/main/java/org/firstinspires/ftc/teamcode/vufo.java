@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.vuforia.CameraDevice;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -151,7 +152,7 @@ public class vufo{
         int cameraMonitorViewId = hwmap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwmap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-        // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+//         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraDirection   = CAMERA_CHOICE;
@@ -322,7 +323,8 @@ public class vufo{
 
         while(!targetVisible){
             targetsSkyStone.activate();
-
+            // Turns on flashlight
+            CameraDevice.getInstance().setFlashTorchMode(true);
 
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
@@ -353,6 +355,8 @@ public class vufo{
                 sideways = translation.get(2) / mmPerInch;
                 forward = translation.get(0) / mmPerInch;
                 up = translation.get(1) / mmPerInch;
+            //Turns off flashlight
+                CameraDevice.getInstance().setFlashTorchMode(false);
                 targetsSkyStone.deactivate();
             }
         }

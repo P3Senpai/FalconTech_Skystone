@@ -89,11 +89,11 @@ public class TesterTeleOp extends LinearOpMode {
     }
     private void lift(Gamepad gp){
         if (gp.dpad_up){
-            bot.leftLift.setPower(0.5);
-            bot.rightLift.setPower(0.5);
+            bot.leftLift.setPower(0.75);
+            bot.rightLift.setPower(0.75);
         }else if(gp.dpad_down){
-            bot.leftLift.setPower(-0.5);
-            bot.rightLift.setPower(-0.5);
+            bot.leftLift.setPower(-0.75);
+            bot.rightLift.setPower(-0.75);
         }else{
             bot.leftLift.setPower(0);
             bot.rightLift.setPower(0);

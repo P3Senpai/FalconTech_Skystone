@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.vuforia.CameraDevice;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -82,7 +83,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  */
 
 
-@TeleOp(name="SKYSTONE Vuforia Nav", group ="Concept")
+@TeleOp(name="!SKYSTONE Vuforia Nav", group ="Concept")
 //@Disabled
 public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
 
@@ -94,6 +95,7 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
     //
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
     private static final boolean PHONE_IS_PORTRAIT = false;
+
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -149,7 +151,9 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-        // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+//      VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraDirection   = CAMERA_CHOICE;
@@ -322,6 +326,8 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
 
         targetsSkyStone.activate();
         while (!isStopRequested()) {
+            // Turns on flashlight
+            CameraDevice.getInstance().setFlashTorchMode(true);
 
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
@@ -356,7 +362,8 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
             }
             telemetry.update();
         }
-
+        // Turns off flashlight
+        CameraDevice.getInstance().setFlashTorchMode(false);
         // Disable Tracking when we are done;
         targetsSkyStone.deactivate();
     }

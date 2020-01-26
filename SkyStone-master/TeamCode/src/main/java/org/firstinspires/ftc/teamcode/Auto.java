@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.vuforia.CameraDevice;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -164,9 +165,9 @@ public class Auto extends LinearOpMode {
                 robot.rightFrontDrive.getCurrentPosition());
         telemetry.update();
 
+        runVuforia();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        //runVuforia();
         telemetry.addData("forward", forward);
         telemetry.addData("sideways", sideways);
         telemetry.addData("up", up);
@@ -482,6 +483,8 @@ public class Auto extends LinearOpMode {
 
         targetsSkyStone.activate();
         while (!isStopRequested() && !targetVisible) {
+        // Turns on flashlight
+            CameraDevice.getInstance().setFlashTorchMode(true);
 
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
@@ -507,6 +510,9 @@ public class Auto extends LinearOpMode {
                 forward = translation.get(0) / mmPerInch;
                 sideways = translation.get(1) / mmPerInch;
                 up = translation.get(2) / mmPerInch;
+
+                // Turns off flashlight
+                CameraDevice.getInstance().setFlashTorchMode(false);
                 targetsSkyStone.deactivate();
 
                 // express the rotation of the robot in degrees.
