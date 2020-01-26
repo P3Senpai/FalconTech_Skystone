@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class HardwareBot{
     // strafe drive moves the robot in the horizontal direction
-    public DcMotor leftFrontDrive, rightFrontDrive,leftBackDrive, rightBackDrive, leftLift, rightLift;
+    public DcMotor leftFrontDrive, rightFrontDrive,leftBackDrive, rightBackDrive, leftLift, rightLift, shooter;
     public Servo  grabber;
 //    public ColorSensor surfaceScannerLeft, surfaceScannerRight;
     private HardwareMap hwmap = null;
@@ -95,6 +95,7 @@ public class HardwareBot{
         rightBackDrive = hwmap.get(DcMotor.class, "right_back_drive");
         leftLift = hwmap.get(DcMotor.class, "left_lift");
         rightLift = hwmap.get(DcMotor.class, "right_lift");
+        shooter = hwmap.get(DcMotor.class, "shooter");
 
         /* Set motor direction */
         leftFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);

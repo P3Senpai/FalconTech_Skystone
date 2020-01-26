@@ -86,7 +86,12 @@ public class TesterTeleOp extends LinearOpMode {
     private void motorTest(Gamepad gp){
         lift(gp);
         driveTest(gp);
+        if(gp.a)
+            bot.shooter.setPower(0.5);
+        else
+            bot.shooter.setPower(0);
     }
+    // uses dpad up and down
     private void lift(Gamepad gp){
         if (gp.dpad_up){
             bot.leftLift.setPower(0.75);
