@@ -131,7 +131,8 @@ public class NewAuto extends LinearOpMode {
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     DRIVE_SPEED             = 0.6;
+    static final double     DRIVE_SPEED             = 0.8;
+    static final double     LIFT_SPEED              = 0.5;
 
     @Override
     public void runOpMode() {
@@ -165,8 +166,14 @@ public class NewAuto extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        encoderDrive(.8,18,18,18,18,20);
+        encoderDrive(DRIVE_SPEED,18,18,18,18,20);
+        encoderLift(20, 6, 1);
         runVuforia();
+        encoderLift(20,5, -1);
+        // todo test accuracy of forward variable (might be in place of sideways or up)
+        encoderDrive(DRIVE_SPEED,Math.abs(forward),Math.abs(forward),Math.abs(forward),Math.abs(forward),20);
+
+
         telemetry.addData("forward", forward);
         telemetry.addData("sideways", sideways);
         telemetry.addData("up", up);
@@ -222,10 +229,13 @@ public class NewAuto extends LinearOpMode {
 
             // reset the timeout time and start motion.
             runtime.reset();
-            robot.rightFrontDrive.setPower(Math.abs(speed));
+
             robot.leftFrontDrive.setPower(Math.abs(speed));
-            robot.rightBackDrive.setPower(Math.abs(speed));
             robot.leftBackDrive.setPower(Math.abs(speed));
+            sleep(400);
+
+            robot.rightFrontDrive.setPower(Math.abs(speed));
+            robot.rightBackDrive.setPower(Math.abs(speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
@@ -235,7 +245,7 @@ public class NewAuto extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (robot.leftFrontDrive.isBusy() || robot.rightFrontDrive.isBusy() || robot.rightBackDrive.isBusy() || robot.leftBackDrive.isBusy())) {
+                    (robot.leftFrontDrive.isBusy() && robot.rightFrontDrive.isBusy() && robot.rightBackDrive.isBusy() && robot.leftBackDrive.isBusy())) {
 
                 // Display it for the driver.
                 telemetry.addData("Path1",  "Running to %7d :%7d :%7d :%7d", newLeftFrontTarget,  newRightFrontTarget, newLeftBackTarget, newRightBackTarget);
@@ -263,20 +273,18 @@ public class NewAuto extends LinearOpMode {
         }
     }
 
-    public void encoderLift(){
-
-    }
     public void encoderGrab(){
 
     }
-    public void startUp(int timeoutS, int UP){
+    public void encoderLift(int timeoutS, int inches, int UP){
         // UP is 1 if going up and -1 if going down
+        // todo test accuracy of encoderLift()
         int liftLeftTarget;
         int liftRightTarget;
 
         if(opModeIsActive()){
-            liftLeftTarget = robot.leftLift.getCurrentPosition() + (int)(COUNTS_PER_MOTOR_REV * 1.2) * UP;
-            liftRightTarget = robot.rightLift.getCurrentPosition() + (int)(COUNTS_PER_MOTOR_REV * 1.2) * UP;
+            liftLeftTarget = robot.leftLift.getCurrentPosition() + (int)(COUNTS_PER_MOTOR_REV * 0.2 * inches) * UP;
+            liftRightTarget = robot.rightLift.getCurrentPosition() + (int)(COUNTS_PER_MOTOR_REV * 0.2 * inches) * UP;
 
             robot.leftLift.setTargetPosition(liftLeftTarget);
             robot.rightLift.setTargetPosition(liftRightTarget);
@@ -285,8 +293,8 @@ public class NewAuto extends LinearOpMode {
             robot.rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             runtime.reset();
-            robot.leftLift.setPower(Math.abs(.5) * UP);
-            robot.rightLift.setPower(Math.abs(.5) * UP);
+            robot.leftLift.setPower(Math.abs(LIFT_SPEED) * UP);
+            robot.rightLift.setPower(Math.abs(LIFT_SPEED) * UP);
 
             while(opModeIsActive() && runtime.seconds() < timeoutS && robot.leftLift.isBusy() && robot.rightLift.isBusy()){
 
