@@ -172,7 +172,8 @@ public class NewAuto extends LinearOpMode {
         encoderLift(20,5, -1);
         // todo test accuracy of forward variable (might be in place of sideways or up)
         encoderDrive(DRIVE_SPEED,Math.abs(forward),Math.abs(forward),Math.abs(forward),Math.abs(forward),20);
-
+        // todo figure out strafe for grabbing block
+        // todo test grabber servo
 
         telemetry.addData("forward", forward);
         telemetry.addData("sideways", sideways);
@@ -273,8 +274,14 @@ public class NewAuto extends LinearOpMode {
         }
     }
 
-    public void encoderGrab(){
-
+    public void grab(){
+        robot.grabber.setPosition(robot.GRABBED_POSITION);
+    }
+    public void releaseHalf(){
+        robot.grabber.setPosition(robot.RELEASED_POSITION_HALF);
+    }
+    public void releaseFull(){
+        robot.grabber.setPosition(robot.RELEASED_POSITION_FULL);
     }
     public void encoderLift(int timeoutS, int inches, int UP){
         // UP is 1 if going up and -1 if going down
