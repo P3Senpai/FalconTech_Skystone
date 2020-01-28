@@ -1,4 +1,7 @@
-#Sun Jan 26 12:11:29 CET 2020
+#Tue Jan 28 13:59:31 CET 2020
 base.0=/Users/petr-konstantin/Desktop/robotics/Code/FalconTech_Skystone/SkyStone-master/TeamCode/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+path.1=classes.dex
+renamed.1=classes2.dex
 path.0=classes.dex
 renamed.0=classes.dex
+base.1=/Users/alantink/FalconTech_Skystone/SkyStone-master/TeamCode/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
