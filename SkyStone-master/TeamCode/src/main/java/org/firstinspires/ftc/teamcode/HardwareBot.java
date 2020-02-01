@@ -20,7 +20,7 @@ public class HardwareBot{
     // faster when picking up stones off the ground
     public final double RELEASED_POSITION_HALF = 0.4183;
     // safer when putting stones on tower
-    public final double RELEASED_POSITION_FULL = 0.7894;
+    public final double RELEASED_POSITION_FULL = 0.7994;
 
 
     public HardwareBot(){}
