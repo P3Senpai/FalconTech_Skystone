@@ -118,10 +118,11 @@ public class TesterTeleOp extends LinearOpMode {
         double rightFrontPower = Range.clip(drive - strafe - turn, -1,1);
         double rightBackPower = Range.clip(drive + strafe - turn, -1,1);
 
-        bot.leftFrontDrive.setPower(leftFrontPower);
-        bot.leftBackDrive.setPower(leftBackPower);
-        bot.rightFrontDrive.setPower(rightFrontPower);
-        bot.rightBackDrive.setPower(rightBackPower);
+        bot.leftFrontDrive.setPower(leftFrontPower * 0.7); // at 30% for home testing
+        bot.leftBackDrive.setPower(leftBackPower * 0.7);
+        bot.rightFrontDrive.setPower(rightFrontPower* 0.7);
+        bot.rightBackDrive.setPower(rightBackPower* 0.7);
+        //todo add sprint
 
 //        telemetry.addData("Drive stick data", "left front: %.2f --- left back: %.2f --- right front: %.2f --- right back: %.2f", leftFrontPower, leftBackPower,rightFrontPower,rightBackPower);
         telemetry.addData("Drive motors", "Left front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f", bot.leftFrontDrive.getPower(), bot.leftBackDrive.getPower(),bot.rightFrontDrive.getPower(), bot.rightBackDrive.getPower());

@@ -14,7 +14,7 @@ public class HardwareBot {
     private DriveTrain driveTrain;
     private CoreMechanism liftPlusGrabber;
 // Grabber pos
-    public final double GRABBED_POSITION = 0.2;
+    public final double GRABBED_POSITION = 0.22; // original is 0.2
     // faster when picking up stones off the ground
     public final double RELEASED_POSITION_HALF = 0.4183;
     // safer when putting stones on tower
@@ -97,9 +97,9 @@ public class HardwareBot {
 
         /* Set motor direction */
         leftFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightBackDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         leftLift.setDirection(DcMotorSimple.Direction.REVERSE);
         rightLift.setDirection(DcMotorSimple.Direction.FORWARD);
 
