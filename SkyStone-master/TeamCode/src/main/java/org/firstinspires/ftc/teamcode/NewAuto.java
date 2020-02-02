@@ -225,10 +225,10 @@ public class NewAuto extends LinearOpMode {
 
         waitForStart();
 
-        encoderLift(20, 6, 1);
-        encoderDrive(DRIVE_SPEED,21,21,21,21,20);
-        if(runVuforia(5)){
-            telemetry.addData("suck", "it", "vuforia");
+//        encoderLift(20, 6, 1);
+//        encoderDrive(DRIVE_SPEED,21,21,21,21,20);
+//        if(runVuforia(5)){
+//            telemetry.addData("suck", "it", "vuforia");
 //             if(sideways < 0){
 //                 //strafe right
 //                encoderDrive(DRIVE_SPEED, strafeDistance(sideways), -strafeDistance(sideways), -strafeDistance(sideways), strafeDistance(sideways), 20);
@@ -237,20 +237,24 @@ public class NewAuto extends LinearOpMode {
 //                 //strafe left
 //                 encoderDrive(DRIVE_SPEED, -strafeDistance(sideways), strafeDistance(sideways), strafeDistance(sideways), -strafeDistance(sideways), 20);
 //             }
+//            encoderLift(20,6, -1);
+//
 //            forward = Math.abs(forward);
 //            encoderDrive(DRIVE_SPEED, strafeDistance(forward), strafeDistance(forward), strafeDistance(forward), -strafeDistance(forward), 20);
-
-        }
-        else{
-            //strafe 12.75 inches to the left and pick up the cube
-            telemetry.addData("sh", "it");
+//
+//        }
+//        else{
+//            //strafe 12.75 inches to the left and pick up the cube
+//            telemetry.addData("sh", "it");
 //            encoderDrive(DRIVE_SPEED, strafeDistance(-12.75),strafeDistance(12.75),strafeDistance(12.75),strafeDistance(-12.75),20);
+//            encoderLift(20,6, -1);
 //            encoderDrive(DRIVE_SPEED,8,8,8,8,20);
-        }
-        encoderLift(20,6, -1);
-        //tgrab();
-
-        //grab();
+//        }
+//
+//        grab();
+        runVuforia(5);
+        if(targetVisible) telemetry.addData("hi","u");
+        else telemetry.addData("no","u");
 
         sleep(1000);
 
@@ -379,7 +383,7 @@ public class NewAuto extends LinearOpMode {
         }
     }
 
-    public boolean runVuforia(double timeOut) {
+    public void runVuforia(double timeOut) {
         // waitForStart();
 
         // Note: To use the remote camera preview:
@@ -388,6 +392,7 @@ public class NewAuto extends LinearOpMode {
 
         targetsSkyStone.activate();
         runtime.reset();
+
         while (!isStopRequested() && !targetVisible && runtime.seconds() < timeOut) {
             CameraDevice.getInstance().setFlashTorchMode(false);
             CameraDevice.getInstance().setFocusMode(CameraDevice.FOCUS_MODE.FOCUS_MODE_CONTINUOUSAUTO);
@@ -420,7 +425,6 @@ public class NewAuto extends LinearOpMode {
                 CameraDevice.getInstance().setFlashTorchMode(false);
                 targetsSkyStone.deactivate();
 
-                return true;
 
             }
             else {
@@ -428,7 +432,6 @@ public class NewAuto extends LinearOpMode {
             }
             telemetry.update();
         }
-        return false;
     }
 
     public double strafeDistance(double inches){
