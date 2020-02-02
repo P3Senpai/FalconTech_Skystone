@@ -99,7 +99,7 @@ public class NewAuto extends LinearOpMode {
     HardwareBot         robot   = new HardwareBot();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
 
-    static final double     COUNTS_PER_MOTOR_REV    = 288 ;    // eg: TETRIX Motor Encoder
+    static final double     COUNTS_PER_MOTOR_REV    = 576 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -225,14 +225,18 @@ public class NewAuto extends LinearOpMode {
 
         waitForStart();
 
-        //encoderLift(20, 6, 1);
-        //encoderDrive(DRIVE_SPEED,18,18,18,18,20);
-        //runVuforia();
-        //encoderLift(20,6, -1);
-        grab();
-        releaseHalf();
-        grab();
-        releaseFull();
+        encoderLift(20, 6, 1);
+        encoderDrive(DRIVE_SPEED,21,21,21,21,20);
+        if(runVuforia(5)){
+            telemetry.addData("suck", "it", "vuforia");
+        }
+        else{
+            //strafe 12.75 inches to the left and pick up the cube
+            telemetry.addData("sh", "it");
+        }
+        encoderLift(20,6, -1);
+
+        //grab();
 
         sleep(1000);
 
@@ -361,7 +365,7 @@ public class NewAuto extends LinearOpMode {
         }
     }
 
-    public void runVuforia() {
+    public boolean runVuforia(double timeOut) {
         // waitForStart();
 
         // Note: To use the remote camera preview:
@@ -369,7 +373,8 @@ public class NewAuto extends LinearOpMode {
         // Tap the preview window to receive a fresh image.
 
         targetsSkyStone.activate();
-        while (!isStopRequested() && !targetVisible) {
+        runtime.reset();
+        while (!isStopRequested() && !targetVisible && runtime.seconds() < timeOut) {
             CameraDevice.getInstance().setFlashTorchMode(false);
             CameraDevice.getInstance().setFocusMode(CameraDevice.FOCUS_MODE.FOCUS_MODE_CONTINUOUSAUTO);
 
@@ -401,12 +406,15 @@ public class NewAuto extends LinearOpMode {
                 CameraDevice.getInstance().setFlashTorchMode(false);
                 targetsSkyStone.deactivate();
 
+                return true;
+
             }
             else {
                 telemetry.addData("Visible Target", "none");
             }
             telemetry.update();
         }
+        return false;
     }
 
     public double strafeDistance(double inches){
