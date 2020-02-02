@@ -57,7 +57,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@Autonomous(name="TEST AUTONOMOU", group="Pushbot")
+@Autonomous(name="TEST A", group="Pushbot")
 
 public class NewAuto extends LinearOpMode {
 
@@ -229,12 +229,26 @@ public class NewAuto extends LinearOpMode {
         encoderDrive(DRIVE_SPEED,21,21,21,21,20);
         if(runVuforia(5)){
             telemetry.addData("suck", "it", "vuforia");
+//             if(sideways < 0){
+//                 //strafe right
+//                encoderDrive(DRIVE_SPEED, strafeDistance(sideways), -strafeDistance(sideways), -strafeDistance(sideways), strafeDistance(sideways), 20);
+//             }
+//             else{
+//                 //strafe left
+//                 encoderDrive(DRIVE_SPEED, -strafeDistance(sideways), strafeDistance(sideways), strafeDistance(sideways), -strafeDistance(sideways), 20);
+//             }
+//            forward = Math.abs(forward);
+//            encoderDrive(DRIVE_SPEED, strafeDistance(forward), strafeDistance(forward), strafeDistance(forward), -strafeDistance(forward), 20);
+
         }
         else{
             //strafe 12.75 inches to the left and pick up the cube
             telemetry.addData("sh", "it");
+//            encoderDrive(DRIVE_SPEED, strafeDistance(-12.75),strafeDistance(12.75),strafeDistance(12.75),strafeDistance(-12.75),20);
+//            encoderDrive(DRIVE_SPEED,8,8,8,8,20);
         }
         encoderLift(20,6, -1);
+        //tgrab();
 
         //grab();
 
@@ -418,7 +432,7 @@ public class NewAuto extends LinearOpMode {
     }
 
     public double strafeDistance(double inches){
-        return -1;
+        return inches * 1.1;
     }
 
     // turning
