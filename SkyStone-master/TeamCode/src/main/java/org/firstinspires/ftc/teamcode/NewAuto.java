@@ -97,10 +97,11 @@ public class NewAuto extends LinearOpMode {
     HardwareBot         robot   = new HardwareBot();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
 
-    static final double     COUNTS_PER_MOTOR_REV    = 560 ;    // eg: TETRIX Motor Encoder
+    static final double     COUNTS_PER_MALE_MOTOR_REV    = 560 ;    // eg: TETRIX Motor Encoder
+    static final double     COUNTS_PER_FEMALE_MOTOR_REV  = 288 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 0.835 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 2.95 ;     // For figuring circumference // diameter 7.5 cm then converted to 2.952756 inches
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MALE_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 0.8;
     static final double     LIFT_SPEED              = 0.5;
@@ -223,38 +224,44 @@ public class NewAuto extends LinearOpMode {
 
         waitForStart();
 
-        encoderLift(20, 6, 1);
-        encoderDrive(DRIVE_SPEED,21,21,21,21,20);
-        if(runVuforia(5)){
-            telemetry.addData("suck", "it", "vuforia");
-             if(sideways < 0){
-                 //strafe right
-                encoderDrive(DRIVE_SPEED, strafeDistance(sideways), -strafeDistance(sideways), -strafeDistance(sideways), strafeDistance(sideways), 20);
-             }
-             else{
-                 //strafe left
-                 encoderDrive(DRIVE_SPEED, -strafeDistance(sideways), strafeDistance(sideways), strafeDistance(sideways), -strafeDistance(sideways), 20);
-             }
-            encoderLift(20,6, -1);
-
-            forward = Math.abs(forward);
-            encoderDrive(DRIVE_SPEED, strafeDistance(forward), strafeDistance(forward), strafeDistance(forward), -strafeDistance(forward), 20);
-
-        }
-        else{
-            //strafe 12.75 inches to the left and pick up the cube
-            telemetry.addData("sh", "it");
-            encoderDrive(DRIVE_SPEED, strafeDistance(-12.75),strafeDistance(12.75),strafeDistance(12.75),strafeDistance(-12.75),20);
-            encoderLift(20,6, -1);
-            encoderDrive(DRIVE_SPEED,8,8,8,8,20);
-        }
-
-        grab();
-//        encoderDrive(0.4, 4,4,4,4,3);
+//        encoderLift(20, 6, 1); //todo check if its still accurate
+//
+//        encoderDrive(DRIVE_SPEED,21,21,21,21,20);
+//        if(runVuforia(5)){
+//            telemetry.addData("suck", "it", "vuforia");
+//             if(sideways < 0){
+//                 //strafe right
+//                encoderDrive(DRIVE_SPEED, strafeDistance(sideways), -strafeDistance(sideways), -strafeDistance(sideways), strafeDistance(sideways), 20);
+//             }
+//             else{
+//                 //strafe left
+//                 encoderDrive(DRIVE_SPEED, -strafeDistance(sideways), strafeDistance(sideways), strafeDistance(sideways), -strafeDistance(sideways), 20);
+//             }
+//            encoderLift(20,6, -1);
+//
+//            forward = Math.abs(forward);
+//            encoderDrive(DRIVE_SPEED, strafeDistance(forward), strafeDistance(forward), strafeDistance(forward), -strafeDistance(forward), 20);
+//
+//        }
+//        else{
+//            //strafe 12.75 inches to the left and pick up the cube
+//            telemetry.addData("sh", "it");
+//            encoderDrive(DRIVE_SPEED, strafeDistance(-12.75),strafeDistance(12.75),strafeDistance(12.75),strafeDistance(-12.75),20);
+//            encoderLift(20,6, -1);
+//            encoderDrive(DRIVE_SPEED,8,8,8,8,20);
+//        }
+//
+//        grab();
+        //Driving testing Complete! ; hardware fixes
+//        encoderDrive(0.7, 20,20,20,20,7);
+//        sleep(1000);
+//        encoderDrive(0.7, -20,-20,-20,-20,7);
+        //Strafe testing in-progress; needs weight balancing
 //        encoderDrive(0.4, strafeDistance(4),strafeDistance(-4),strafeDistance(-4),strafeDistance(4),20);
 //        sleep(3000);
 //        encoderDrive(0.4, strafeDistance(-4),strafeDistance(4),strafeDistance(4),strafeDistance(-4),20);
-//        encoderDrive(0.4, -4,-4,-4,-4,4);
+        // Lift testing Complete! ; added distinction between male and female motor ticks
+        encoderLift(5,4,1);
 
         //encoderDrive(DRIVE_SPEED,Math.abs(forward),Math.abs(forward),Math.abs(forward),Math.abs(forward),20);
         // todo figure out strafe for grabbing block
@@ -355,8 +362,8 @@ public class NewAuto extends LinearOpMode {
         int liftRightTarget;
 
         if(opModeIsActive()){
-            liftLeftTarget = robot.leftLift.getCurrentPosition() + (int)(COUNTS_PER_MOTOR_REV * 0.25 * inches) * UP;
-            liftRightTarget = robot.rightLift.getCurrentPosition() + (int)(COUNTS_PER_MOTOR_REV * 0.25 * inches) * UP;
+            liftLeftTarget = robot.leftLift.getCurrentPosition() + (int)(COUNTS_PER_FEMALE_MOTOR_REV * 0.25 * inches) * UP;
+            liftRightTarget = robot.rightLift.getCurrentPosition() + (int)(COUNTS_PER_FEMALE_MOTOR_REV * 0.25 * inches) * UP;
 
             robot.leftLift.setTargetPosition(liftLeftTarget);
             robot.rightLift.setTargetPosition(liftRightTarget);
