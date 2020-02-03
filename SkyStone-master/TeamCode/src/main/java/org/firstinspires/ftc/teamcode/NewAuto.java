@@ -34,14 +34,12 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.vuforia.CameraDevice;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -99,9 +97,9 @@ public class NewAuto extends LinearOpMode {
     HardwareBot         robot   = new HardwareBot();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
 
-    static final double     COUNTS_PER_MOTOR_REV    = 576 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+    static final double     COUNTS_PER_MOTOR_REV    = 560 ;    // eg: TETRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 0.835 ;     // This is < 1.0 if geared UP
+    static final double     WHEEL_DIAMETER_INCHES   = 2.95 ;     // For figuring circumference // diameter 7.5 cm then converted to 2.952756 inches
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 0.8;
@@ -225,38 +223,38 @@ public class NewAuto extends LinearOpMode {
 
         waitForStart();
 
-//        encoderLift(20, 6, 1);
-//        encoderDrive(DRIVE_SPEED,21,21,21,21,20);
-//        if(runVuforia(5)){
-//            telemetry.addData("suck", "it", "vuforia");
-//             if(sideways < 0){
-//                 //strafe right
-//                encoderDrive(DRIVE_SPEED, strafeDistance(sideways), -strafeDistance(sideways), -strafeDistance(sideways), strafeDistance(sideways), 20);
-//             }
-//             else{
-//                 //strafe left
-//                 encoderDrive(DRIVE_SPEED, -strafeDistance(sideways), strafeDistance(sideways), strafeDistance(sideways), -strafeDistance(sideways), 20);
-//             }
-//            encoderLift(20,6, -1);
-//
-//            forward = Math.abs(forward);
-//            encoderDrive(DRIVE_SPEED, strafeDistance(forward), strafeDistance(forward), strafeDistance(forward), -strafeDistance(forward), 20);
-//
-//        }
-//        else{
-//            //strafe 12.75 inches to the left and pick up the cube
-//            telemetry.addData("sh", "it");
-//            encoderDrive(DRIVE_SPEED, strafeDistance(-12.75),strafeDistance(12.75),strafeDistance(12.75),strafeDistance(-12.75),20);
-//            encoderLift(20,6, -1);
-//            encoderDrive(DRIVE_SPEED,8,8,8,8,20);
-//        }
-//
-//        grab();
-        runVuforia(5);
-        if(targetVisible) telemetry.addData("hi","u");
-        else telemetry.addData("no","u");
+        encoderLift(20, 6, 1);
+        encoderDrive(DRIVE_SPEED,21,21,21,21,20);
+        if(runVuforia(5)){
+            telemetry.addData("suck", "it", "vuforia");
+             if(sideways < 0){
+                 //strafe right
+                encoderDrive(DRIVE_SPEED, strafeDistance(sideways), -strafeDistance(sideways), -strafeDistance(sideways), strafeDistance(sideways), 20);
+             }
+             else{
+                 //strafe left
+                 encoderDrive(DRIVE_SPEED, -strafeDistance(sideways), strafeDistance(sideways), strafeDistance(sideways), -strafeDistance(sideways), 20);
+             }
+            encoderLift(20,6, -1);
 
-        sleep(1000);
+            forward = Math.abs(forward);
+            encoderDrive(DRIVE_SPEED, strafeDistance(forward), strafeDistance(forward), strafeDistance(forward), -strafeDistance(forward), 20);
+
+        }
+        else{
+            //strafe 12.75 inches to the left and pick up the cube
+            telemetry.addData("sh", "it");
+            encoderDrive(DRIVE_SPEED, strafeDistance(-12.75),strafeDistance(12.75),strafeDistance(12.75),strafeDistance(-12.75),20);
+            encoderLift(20,6, -1);
+            encoderDrive(DRIVE_SPEED,8,8,8,8,20);
+        }
+
+        grab();
+//        encoderDrive(0.4, 4,4,4,4,3);
+//        encoderDrive(0.4, strafeDistance(4),strafeDistance(-4),strafeDistance(-4),strafeDistance(4),20);
+//        sleep(3000);
+//        encoderDrive(0.4, strafeDistance(-4),strafeDistance(4),strafeDistance(4),strafeDistance(-4),20);
+//        encoderDrive(0.4, -4,-4,-4,-4,4);
 
         //encoderDrive(DRIVE_SPEED,Math.abs(forward),Math.abs(forward),Math.abs(forward),Math.abs(forward),20);
         // todo figure out strafe for grabbing block
@@ -303,10 +301,9 @@ public class NewAuto extends LinearOpMode {
             // reset the timeout time and start motion.
             runtime.reset();
 
+            // new motors don't require a sleep in the middle
             robot.leftFrontDrive.setPower(Math.abs(speed));
             robot.leftBackDrive.setPower(Math.abs(speed));
-            sleep(400);
-
             robot.rightFrontDrive.setPower(Math.abs(speed));
             robot.rightBackDrive.setPower(Math.abs(speed));
 
@@ -341,15 +338,15 @@ public class NewAuto extends LinearOpMode {
     }
 
     public void grab(){
-        robot.grabber.setPosition(robot.GRABBED_POSITION);
+        robot.grabber.setPosition(robot.grabbedPosition);
         sleep(500);
     }
     public void releaseHalf(){
-        robot.grabber.setPosition(robot.RELEASED_POSITION_HALF);
+        robot.grabber.setPosition(robot.releasedPositionHalf);
         sleep(500);
     }
     public void releaseFull(){
-        robot.grabber.setPosition(robot.RELEASED_POSITION_FULL);
+        robot.grabber.setPosition(robot.releasedPositionFull);
         sleep(500);
     }
     public void encoderLift(int timeoutS, int inches, int UP){
@@ -383,7 +380,7 @@ public class NewAuto extends LinearOpMode {
         }
     }
 
-    public void runVuforia(double timeOut) {
+    public boolean runVuforia(double timeOut) {
         // waitForStart();
 
         // Note: To use the remote camera preview:
@@ -425,13 +422,14 @@ public class NewAuto extends LinearOpMode {
                 CameraDevice.getInstance().setFlashTorchMode(false);
                 targetsSkyStone.deactivate();
 
-
+                return true; //added true cause it was missing i think
             }
             else {
                 telemetry.addData("Visible Target", "none");
             }
             telemetry.update();
         }
+        return false;
     }
 
     public double strafeDistance(double inches){

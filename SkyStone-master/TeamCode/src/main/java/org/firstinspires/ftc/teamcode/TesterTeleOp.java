@@ -94,11 +94,11 @@ public class TesterTeleOp extends LinearOpMode {
     // uses dpad up and down
     private void lift(Gamepad gp){
         if (gp.dpad_up){
-            bot.leftLift.setPower(0.75);
-            bot.rightLift.setPower(0.75);
+            bot.leftLift.setPower(0.75 * 0.7); // at 70% for home testing
+            bot.rightLift.setPower(0.75 * 0.7);
         }else if(gp.dpad_down){
-            bot.leftLift.setPower(-0.75);
-            bot.rightLift.setPower(-0.75);
+            bot.leftLift.setPower(-0.75 * 0.7);
+            bot.rightLift.setPower(-0.75 * 0.7);
         }else{
             bot.leftLift.setPower(0);
             bot.rightLift.setPower(0);
@@ -118,7 +118,7 @@ public class TesterTeleOp extends LinearOpMode {
         double rightFrontPower = Range.clip(drive - strafe - turn, -1,1);
         double rightBackPower = Range.clip(drive + strafe - turn, -1,1);
 
-        bot.leftFrontDrive.setPower(leftFrontPower * 0.7); // at 30% for home testing
+        bot.leftFrontDrive.setPower(leftFrontPower * 0.7); // at 70% for home testing
         bot.leftBackDrive.setPower(leftBackPower * 0.7);
         bot.rightFrontDrive.setPower(rightFrontPower* 0.7);
         bot.rightBackDrive.setPower(rightBackPower* 0.7);
@@ -139,12 +139,12 @@ public class TesterTeleOp extends LinearOpMode {
 //            bot.grabber.setPosition(grabberPos - 0.01);
 //        }
         if (tgg.toggle(gp.x)){
-            if (bot.GRABBED_POSITION == grabberPos){
-                bot.grabber.setPosition(bot.RELEASED_POSITION_HALF);
-            }else if(bot.RELEASED_POSITION_FULL == grabberPos){
-                bot.grabber.setPosition(bot.GRABBED_POSITION);
+            if (bot.grabbedPosition == grabberPos){
+                bot.grabber.setPosition(bot.releasedPositionHalf);
+            }else if(bot.releasedPositionFull == grabberPos){
+                bot.grabber.setPosition(bot.grabbedPosition);
             }else{
-                bot.grabber.setPosition(bot.RELEASED_POSITION_FULL);
+                bot.grabber.setPosition(bot.releasedPositionFull);
             }
 
         }
