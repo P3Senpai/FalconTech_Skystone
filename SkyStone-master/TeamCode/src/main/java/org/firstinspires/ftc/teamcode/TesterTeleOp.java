@@ -57,6 +57,8 @@ public class TesterTeleOp extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private Toggle tgg = new Toggle();
     private HardwareBot bot = new HardwareBot();
+    private double vfl,vbl, vfr, vbr;
+    private int timer;
 
     @Override
     public void runOpMode() {
@@ -113,17 +115,25 @@ public class TesterTeleOp extends LinearOpMode {
         double turn = gp.right_stick_x;
         double strafe = (gp.left_trigger > gp.right_trigger)? -gp.left_trigger: gp.right_trigger; // left trigger is between -1 and 0 right trigger is between 0 and 1
 
-        double leftFrontPower = Range.clip(drive + strafe + turn, -1,1);
-        double leftBackPower = Range.clip(drive - strafe + turn, -1,1);
-        double rightFrontPower = Range.clip(drive - strafe - turn, -1,1);
-        double rightBackPower = Range.clip(drive + strafe - turn, -1,1);
+        double leftFrontPower = Range.clip(drive + strafe + turn, -(1721.0/2202),(1721.0/2202)); // average velocity 2202
+        double leftBackPower = Range.clip(drive - strafe + turn, -(1721.0/2114),(1721.0/2114)); // average velocity 2114
+        double rightFrontPower = Range.clip(drive - strafe - turn, -(1721.0/1777),(1721.0/1777)); // average velocity 1777
+        double rightBackPower = Range.clip(drive + strafe - turn, -1,1); // average velocity 1721 (smallest value)
 
         bot.leftFrontDrive.setPower(leftFrontPower * 0.7); // at 70% for home testing
         bot.leftBackDrive.setPower(leftBackPower * 0.7);
         bot.rightFrontDrive.setPower(rightFrontPower* 0.7);
         bot.rightBackDrive.setPower(rightBackPower* 0.7);
-        //todo add sprint
-
+//todo add sprint
+        if(bot.leftFrontDrive.getPower() > 0){
+            vfl +=  bot.leftFrontDrive.getVelocity();
+            vbl +=  bot.leftBackDrive.getVelocity();
+            vfr +=  bot.rightFrontDrive.getVelocity();
+            vbr +=  bot.rightBackDrive.getVelocity();
+            timer++;
+        }
+        telemetry.addData("Drive Average velocity", "left front: %.2f --- left back: %.2f --- right front: %.2f --- right back: %.2f", vfl/timer, vbl/timer, vfr/timer, vbr/timer);
+        telemetry.addData("Drive velocity", "left front: %.2f --- left back: %.2f --- right front: %.2f --- right back: %.2f", bot.leftFrontDrive.getVelocity(), bot.leftBackDrive.getVelocity(),bot.rightFrontDrive.getVelocity(),bot.rightBackDrive.getVelocity());
 //        telemetry.addData("Drive stick data", "left front: %.2f --- left back: %.2f --- right front: %.2f --- right back: %.2f", leftFrontPower, leftBackPower,rightFrontPower,rightBackPower);
         telemetry.addData("Drive motors", "Left front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f", bot.leftFrontDrive.getPower(), bot.leftBackDrive.getPower(),bot.rightFrontDrive.getPower(), bot.rightBackDrive.getPower());
     }

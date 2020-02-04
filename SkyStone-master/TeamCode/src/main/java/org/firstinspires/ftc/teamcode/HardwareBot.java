@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class HardwareBot {
     // strafe drive moves the robot in the horizontal direction
-    public DcMotor leftFrontDrive, rightFrontDrive,leftBackDrive, rightBackDrive, leftLift, rightLift, shooter;
+    public DcMotorEx leftFrontDrive, rightFrontDrive,leftBackDrive, rightBackDrive, leftLift, rightLift, shooter;
     public Servo  grabber;
 //    public ColorSensor surfaceScannerLeft, surfaceScannerRight;
     private HardwareMap hwmap = null;
@@ -87,13 +88,13 @@ public class HardwareBot {
         hwmap = hardwareMap;
 
         /* Init motors */
-        leftFrontDrive = hwmap.get(DcMotor.class, "left_front_drive");
-        rightFrontDrive = hwmap.get(DcMotor.class, "right_front_drive");
-        leftBackDrive = hwmap.get(DcMotor.class, "left_back_drive");
-        rightBackDrive = hwmap.get(DcMotor.class, "right_back_drive");
-        leftLift = hwmap.get(DcMotor.class, "left_lift");
-        rightLift = hwmap.get(DcMotor.class, "right_lift");
-        shooter = hwmap.get(DcMotor.class, "shooter");
+        leftFrontDrive = hwmap.get(DcMotorEx.class, "left_front_drive");
+        rightFrontDrive = hwmap.get(DcMotorEx.class, "right_front_drive");
+        leftBackDrive = hwmap.get(DcMotorEx.class, "left_back_drive");
+        rightBackDrive = hwmap.get(DcMotorEx.class, "right_back_drive");
+        leftLift = hwmap.get(DcMotorEx.class, "left_lift");
+        rightLift = hwmap.get(DcMotorEx.class, "right_lift");
+        shooter = hwmap.get(DcMotorEx.class, "shooter");
 
         /* Set motor direction */
         leftFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);

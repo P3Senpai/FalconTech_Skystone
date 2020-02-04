@@ -49,6 +49,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
+import java.util.concurrent.locks.*;
+
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
@@ -105,6 +107,7 @@ public class Auto extends LinearOpMode {
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 0.8;
     static final double     LIFT_SPEED              = 0.5;
+    static final Lock lock = new ReentrantLock();
 
     static VuforiaTrackables targetsSkyStone;
     static VuforiaTrackable stoneTarget;
@@ -224,12 +227,28 @@ public class Auto extends LinearOpMode {
 
         waitForStart();
 
-        encoderLift(20, 6, 1); //todo check if its still accurate
+        encoderLift(20, 6, 1);
         runVuforia(5);
-        if(targetVisible) telemetry.addData("fuck","yeah");
-        else telemetry.addData("oh","no");
-        telemetry.update();
-        encoderLift(20, 6, -1);
+        if(targetVisible){
+            telemetry.addData("forward", forward);
+            telemetry.addData("sideways", sideways);
+        }
+        else{
+            //strafe 12.75 inches to the left and pick up the cube
+            telemetry.addData("sh", "it");
+        }
+
+//        double newForward = Math.abs(forward);
+//        if(sideways < 0){
+//            encoderDrive(DRIVE_SPEED, strafeDistance(sideways), -strafeDistance(sideways), -strafeDistance(sideways), strafeDistance(sideways), 20);
+//        }
+//        else{
+//            encoderDrive(DRIVE_SPEED, -strafeDistance(sideways), strafeDistance(sideways), strafeDistance(sideways), -strafeDistance(sideways), 20);
+//        }
+//        encoderLift(20, 6, -1);
+//        encoderDrive(DRIVE_SPEED, newForward, newForward, newForward, newForward, 20);
+//        grab();
+
 //
 //        encoderDrive(DRIVE_SPEED,21,21,21,21,20);
 //        runVuforia(5);
@@ -260,14 +279,16 @@ public class Auto extends LinearOpMode {
 //        grab();
 
 
+
         //encoderDrive(DRIVE_SPEED,21,21,21,21,20);
         //encoderDrive(DRIVE_SPEED, strafeDistance(-10),strafeDistance(10),strafeDistance(10),strafeDistance(-10),20);
-        encoderDrive(DRIVE_SPEED, -10,10,10,-10,20);
+
+
+//        double newStrafe = strafeDistance(10);
+//        encoderDrive(DRIVE_SPEED, -newStrafe,newStrafe,newStrafe,-newStrafe,20);
 
 
         //encoderDrive(DRIVE_SPEED,Math.abs(forward),Math.abs(forward),Math.abs(forward),Math.abs(forward),20);
-        // todo figure out strafe for grabbing block
-        // todo test grabber servo
 
         //moving right on y axis is negative
 
@@ -395,52 +416,52 @@ public class Auto extends LinearOpMode {
         // Note: To use the remote camera preview:
         // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
         // Tap the preview window to receive a fresh image.
+        // todo synchronized (this) {
+            targetsSkyStone.activate();
+            runtime.reset();
 
-        targetsSkyStone.activate();
-        runtime.reset();
-
-        while (!isStopRequested() && !targetVisible && runtime.seconds() < timeOut) {
-            CameraDevice.getInstance().setFlashTorchMode(false);
-            CameraDevice.getInstance().setFocusMode(CameraDevice.FOCUS_MODE.FOCUS_MODE_CONTINUOUSAUTO);
-
-            //encoderDrive(.8,1,1,1,1,5);
-            // check all the trackable targets to see which one (if any) is visible.
-            targetVisible = false;
-
-            if (((VuforiaTrackableDefaultListener)stoneTarget.getListener()).isVisible()) {
-                telemetry.addData("Visible Target", stoneTarget.getName());
-                targetVisible = true;
-
-                // getUpdatedRobotLocation() will return null if no new information is available since
-                // the last time that call was made, or if the trackable is not currently visible.
-                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)stoneTarget.getListener()).getUpdatedRobotLocation();
-                if (robotLocationTransform != null) {
-                    lastLocation = robotLocationTransform;
-                }
-                break;
-            }
-
-            // Provide feedback as to where the robot is located (if we know).
-            if (targetVisible) {
-                // express position (translation) of robot in inches.
-                VectorF translation = lastLocation.getTranslation();
-                forward = translation.get(0) / mmPerInch;
-                sideways = translation.get(1) / mmPerInch;
-                up = translation.get(2) / mmPerInch;
-
+            while (!isStopRequested() && !targetVisible && runtime.seconds() < timeOut) {
                 CameraDevice.getInstance().setFlashTorchMode(false);
-                targetsSkyStone.deactivate();
+                CameraDevice.getInstance().setFocusMode(CameraDevice.FOCUS_MODE.FOCUS_MODE_CONTINUOUSAUTO);
 
+                //encoderDrive(.8,1,1,1,1,5);
+                // check all the trackable targets to see which one (if any) is visible.
+                targetVisible = false;
+
+                if (((VuforiaTrackableDefaultListener) stoneTarget.getListener()).isVisible()) {
+                    telemetry.addData("Visible Target", stoneTarget.getName());
+                    targetVisible = true;
+
+                    // getUpdatedRobotLocation() will return null if no new information is available since
+                    // the last time that call was made, or if the trackable is not currently visible.
+                    OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) stoneTarget.getListener()).getUpdatedRobotLocation();
+                    if (robotLocationTransform != null) {
+                        lastLocation = robotLocationTransform;
+                    }
+                    break;
+                }
+
+                // Provide feedback as to where the robot is located (if we know).
+                if (targetVisible) {
+                    // express position (translation) of robot in inches.
+                    VectorF translation = lastLocation.getTranslation();
+                    forward = translation.get(0) / mmPerInch;
+                    sideways = translation.get(1) / mmPerInch;
+                    up = translation.get(2) / mmPerInch;
+
+                    CameraDevice.getInstance().setFlashTorchMode(false);
+                    targetsSkyStone.deactivate();
+
+                } else {
+                    telemetry.addData("Visible Target", "none");
+                }
+                telemetry.update();
             }
-            else {
-                telemetry.addData("Visible Target", "none");
-            }
-            telemetry.update();
-        }
+        // todo }
     }
 
     public double strafeDistance(double inches){
-        return inches * 1.1;
+        return inches * 1.2;
     }
 
     // turning
