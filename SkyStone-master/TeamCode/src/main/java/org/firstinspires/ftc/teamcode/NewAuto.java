@@ -217,13 +217,13 @@ public class NewAuto extends LinearOpMode {
         grab();
         encoderLift(20, 2, 1, LIFT_SPEED);
         drive(-15);
-        rotate(75, 0.5);
+        rotate(80, 0.5);
         drive(75);
-        rotate(-70, 0.5);
+        rotate(-75, 0.5);
         encoderLift(20, 6, 1, 0.8);
         drive(18);
         releaseFull();
-        encoderLift(20, 8, -1, 0.8);
+        encoderLift(20, 6, -1, 0.8);
         drive(-35);
 
         //moving right on y axis is negative
