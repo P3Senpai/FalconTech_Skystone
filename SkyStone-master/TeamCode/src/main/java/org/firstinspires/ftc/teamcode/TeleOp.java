@@ -56,6 +56,7 @@ public class TeleOp extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private Toggle tgg = new Toggle();
     private HardwareBot bot = new HardwareBot();
+    private double leftFrontVelocity, leftBackVelocity, rightFrontVelocity, rightBackVelocity;
     private int timer;
 
     @Override
@@ -82,7 +83,7 @@ public class TeleOp extends LinearOpMode {
         }
     }
 
-// uses dpad up and down buttons used + buttons used in driveTest
+    // uses dpad up and down buttons used + buttons used in driveTest
     private void motorTest(Gamepad gp){
         lift(gp);
         driveTest(gp);
@@ -107,29 +108,41 @@ public class TeleOp extends LinearOpMode {
         telemetry.addData("Lift ticks", "left: %.0f right: %.0f",(double)bot.leftLift.getCurrentPosition(),(double)bot.rightLift.getCurrentPosition());
     }
 
-//uses left and right stick and both triggers
+    //uses left and right stick and both triggers
     private void driveTest(Gamepad gp){
         double drive = -gp.left_stick_y;
         double turn = gp.right_stick_x;
         double strafe = (gp.left_trigger > gp.right_trigger)? -gp.left_trigger: gp.right_trigger; // left trigger is between -1 and 0 right trigger is between 0 and 1
 
-        double leftFrontPower = Range.clip(drive + strafe + turn, -(1721.0/2202),(1721.0/2202)); // average velocity 2202
-        double leftBackPower = Range.clip(drive - strafe + turn, -(1721.0/2114),(1721.0/2114)); // average velocity 2114
-        double rightFrontPower = Range.clip(drive - strafe - turn, -(1721.0/1777),(1721.0/1777)); // average velocity 1777
-        double rightBackPower = Range.clip(drive + strafe - turn, -1,1); // average velocity 1721 (smallest value)
+        double leftFrontPower = Range.clip((drive * 0.8065) + strafe + turn, -1, 1); // average velocity 2202 (1721.0/2202) +0.025
+        double leftBackPower = Range.clip((drive * 0.83509) - strafe + turn, -1,1); // average velocity 2114 (1721.0/2114)  +0.025
+        double rightFrontPower = Range.clip((drive * 0.96848) - strafe - turn, -1,1); // average velocity 1777 (1721.0/1777)
+        double rightBackPower = Range.clip((drive) + strafe - turn, -1,1); // average velocity 1721 (smallest value)
 
         bot.leftFrontDrive.setPower(leftFrontPower * 0.7); // at 70% for home testing
         bot.leftBackDrive.setPower(leftBackPower * 0.7);
         bot.rightFrontDrive.setPower(rightFrontPower* 0.7);
         bot.rightBackDrive.setPower(rightBackPower* 0.7);
 //todo add sprint
+        // gets data for velocity average only if driving forward
+        if(drive > 0){
+            leftFrontVelocity += bot.leftFrontDrive.getVelocity();
+            leftBackVelocity += bot.leftBackDrive.getVelocity();
+            rightFrontVelocity += bot.rightFrontDrive.getVelocity();
+            rightBackVelocity += bot.rightBackDrive.getVelocity();
+            timer++;
+        }
+
+        telemetry.addData("Drive motors", "Left --- front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f", bot.leftFrontDrive.getPower(), bot.leftBackDrive.getPower(),bot.rightFrontDrive.getPower(), bot.rightBackDrive.getPower());
+        telemetry.addData("Drive Velocity motors", "Left --- front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f", bot.leftFrontDrive.getVelocity(), bot.leftBackDrive.getVelocity(),bot.rightFrontDrive.getVelocity(), bot.rightBackDrive.getVelocity());
+        telemetry.addData("Drive Average motors", "Left --- front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f", leftFrontVelocity/timer, leftBackVelocity/timer, rightFrontVelocity/timer, rightBackVelocity/timer);
     }
 
-// uses left/right dpad
+    // uses left/right dpad
     private void servoTest(Gamepad gp){
         double grabberPos = bot.grabber.getPosition();
 
-    // grabber servo position checker
+        // grabber servo position checker
 //        if (gp.dpad_left){
 //            bot.grabber.setPosition(grabberPos + 0.01);
 //        }else if (gp.dpad_right){
@@ -145,7 +158,7 @@ public class TeleOp extends LinearOpMode {
             }
 
         }
-    telemetry.addData("Servo Position: ", grabberPos);
+        telemetry.addData("Servo Position: ", grabberPos);
 
     }
     private void strafeDrive(Gamepad gp){
