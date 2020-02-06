@@ -191,7 +191,7 @@ public class BlueAuto extends LinearOpMode {
         //todo
 
         encoderLift(20, 8, 1, 0.8);
-        drive(25);
+        drive(23);
         strafeRight(4);
         lock.lock();
         runVuforia(5);
@@ -199,10 +199,10 @@ public class BlueAuto extends LinearOpMode {
         if(targetVisible){
             if(Math.abs(sideways) > 0.5){
                 if(sideways < 0){
-                    strafeLeft(strafeDistance(Math.abs(sideways)));
+                    strafeLeft(strafeDistance(Math.abs(sideways)+0.5));
                 }
                 else{
-                    strafeRight(strafeDistance(sideways));
+                    strafeRight(strafeDistance(sideways+0.5));
                 }
             }
             encoderLift(20, 8, -1, LIFT_SPEED);
@@ -210,7 +210,7 @@ public class BlueAuto extends LinearOpMode {
             drive(newForward);
         }
         else{
-            strafeLeft(15);
+            strafeLeft(13);
             encoderLift(20, 8, -1, LIFT_SPEED);
             drive(9);
         }
@@ -221,11 +221,13 @@ public class BlueAuto extends LinearOpMode {
         drive(75);
         rotate(-75, 0.5);
         encoderLift(20, 6, 1, 0.8);
-        drive(18);
+        drive(20);
         releaseFull();
-        encoderLift(20, 6, -1, 0.8);
-        drive(-35);
-        strafeRight(35);
+        encoderLift(20, 5, -1, 0.8);
+        drive(-38);
+        encoderLift(20, 2, 1, 0.8);
+        drive(13);
+        strafeRight(40);
 
         //moving right on y axis is negative
 
