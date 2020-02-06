@@ -61,9 +61,9 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
-@Autonomous(name="TEST AUTO", group="Pushbot")
+@Autonomous(name="Blue AUTO", group="Pushbot")
 
-public class NewAuto extends LinearOpMode {
+public class BlueAuto extends LinearOpMode {
 
     // Vuforia Variables Begin
 
