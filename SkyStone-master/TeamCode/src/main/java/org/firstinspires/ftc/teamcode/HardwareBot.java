@@ -14,11 +14,11 @@ public class HardwareBot {
     private DriveTrain driveTrain;
     private CoreMechanism liftPlusGrabber;
 // Grabber pos
-    public double grabbedPosition = 0.22; // original is 0.2
+    public double grabbedPosition = 0.21; // original is 0.2
     // faster when picking up stones off the ground
-    public double releasedPositionHalf = 0.4183; // original 0.4183
+    public double releasedPositionHalf = 0.4883; // original 0.4183
     // safer when putting stones on tower
-    public double releasedPositionFull = 0.7994; // original 0.7994
+    public double releasedPositionFull = 0.8094; // original 0.7994
 
 
     public HardwareBot(){}

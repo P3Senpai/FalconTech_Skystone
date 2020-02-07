@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Official TeleOp", group="Linear Opmode")
-@Disabled
+//@Disabled
 public class TeleOpReal extends LinearOpMode {
 
     // Declare OpMode members.
@@ -99,16 +99,20 @@ public class TeleOpReal extends LinearOpMode {
     private void lift(Gamepad gp){
         boolean withinRange = (bot.leftLift.getCurrentPosition() >=0 && bot.rightLift.getCurrentPosition() >= 0);
         // TODO: see if it works
+        double liftPower;
         if (gp.dpad_up){
-            bot.leftLift.setPower(0.75);
-            bot.rightLift.setPower(0.75);
-        }else if(gp.dpad_down && withinRange){
-            bot.leftLift.setPower(-0.6);
-            bot.rightLift.setPower(-0.6);
+            bot.leftLift.setPower(0.6);
+            bot.rightLift.setPower(0.6);
+        }else if(gp.dpad_down){
+            bot.leftLift.setPower(-0.3);
+            bot.rightLift.setPower(-0.3);
         }else{
             bot.leftLift.setPower(0);
             bot.rightLift.setPower(0);
         }
+//        liftPower = Range.clip(-gp.left_stick_y, -1.,1.0) * liftPower;
+//        bot.leftLift.setPower(liftPower);
+//        bot.rightLift.setPower(liftPower);
 
         //todo add 0 reset for current position
 
@@ -122,10 +126,10 @@ public class TeleOpReal extends LinearOpMode {
         double turn = gp.right_stick_x;
         double strafe = (gp.left_trigger > gp.right_trigger)? -gp.left_trigger: gp.right_trigger; // left trigger is between -1 and 0 right trigger is between 0 and 1
 
-        double leftFrontPower = Range.clip((drive * 0.8065) + strafe + turn, -1, 1); // average velocity 2202 (1721.0/2202) +0.025
-        double leftBackPower = Range.clip((drive * 0.83509) - strafe + turn, -1,1); // average velocity 2114 (1721.0/2114)  +0.025
-        double rightFrontPower = Range.clip((drive * 0.96848) - strafe - turn, -1,1); // average velocity 1777 (1721.0/1777)
-        double rightBackPower = Range.clip((drive) + strafe - turn, -1,1); // average velocity 1721 (smallest value)
+        double leftFrontPower = Range.clip((drive) + strafe + (turn * 0.7), -1, 1); // average velocity 2202 (1721.0/2202) +0.025 // * 0.8065
+        double leftBackPower = Range.clip((drive) - strafe + (turn * 0.7), -1,1); // average velocity 2114 (1721.0/2114)  +0.025 // * 0.83509
+        double rightFrontPower = Range.clip((drive ) - strafe - (turn * 0.7), -1,1); // average velocity 1777 (1721.0/1777) // * 0.96848
+        double rightBackPower = Range.clip((drive) + strafe - (turn * 0.7), -1,1); // average velocity 1721 (smallest value)
 
         // sprint
         if (gp.left_stick_button || gp.right_stick_button){
@@ -141,17 +145,15 @@ public class TeleOpReal extends LinearOpMode {
         telemetry.addData("Drive Velocity motors", "Left --- front: %.2f, back: %.2f  ---  Right front: %.2f, back: %.2f", bot.leftFrontDrive.getVelocity(), bot.leftBackDrive.getVelocity(),bot.rightFrontDrive.getVelocity(), bot.rightBackDrive.getVelocity());
     }
 
-    // uses left/right dpad
     private void grabber(Gamepad gp){
         double grabberPos = bot.grabber.getPosition();
         double releasePos = (bot.leftLift.getCurrentPosition() > 100 || bot.rightLift.getCurrentPosition() > 100)?bot.releasedPositionFull:bot.releasedPositionHalf;
 
         if (tgg.toggle(gp.x)){
-            if (bot.grabbedPosition == grabberPos){
-                bot.grabber.setPosition(releasePos);
-            }else{
-                bot.grabber.setPosition(bot.grabbedPosition);
-            }
+            bot.grabber.setPosition(bot.grabbedPosition);
+        }
+        if (tgg.toggle(gp.y)){
+            bot.grabber.setPosition(releasePos);
         }
         //todo see if it works
         if (tgg.hold(gp.x,3,runtime.seconds())){ // sets to the capstone open position

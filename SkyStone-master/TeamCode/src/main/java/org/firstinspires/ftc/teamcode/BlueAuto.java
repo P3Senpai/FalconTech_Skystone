@@ -61,7 +61,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
-@Autonomous(name="Blue AUTO", group="Pushbot")
+@Autonomous(name="Blue Auto", group="Pushbot")
 
 public class BlueAuto extends LinearOpMode {
 
@@ -218,17 +218,22 @@ public class BlueAuto extends LinearOpMode {
         encoderLift(20, 2, 1, LIFT_SPEED);
         drive(-15);
         rotate(80, 0.5);
-        drive(75);
-        rotate(-75, 0.5);
+        if(targetVisible){
+            drive(78);
+        }
+        else{
+            drive(73);
+        }
+        rotate(-70, 0.5);
         encoderLift(20, 6, 1, 0.8);
-        drive(20);
+        drive(18);
         releaseFull();
         encoderLift(20, 5, -1, 0.8);
-        drive(-38);
-        encoderLift(20, 2, 1, 0.8);
+        drive(-44);
+        encoderLift(20, 4, 1, 0.8);
         strafeRight(20);
-        drive(13);
-        strafeRight(20);
+//        drive(18);
+//        strafeRight(15);
 
         //moving right on y axis is negative
 
