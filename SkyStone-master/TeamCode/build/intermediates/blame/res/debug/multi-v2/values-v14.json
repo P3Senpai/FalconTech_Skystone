@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/alantink/FalconTech_Skystone/SkyStone-master/TeamCode/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v14/values-v14.xml",
+            "outputFile": "/Users/petr-konstantin/Desktop/robotics/Code/FalconTech_Skystone/SkyStone-master/TeamCode/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v14/values-v14.xml",
             "map": [
                 {
-                    "source": "/Users/alantink/.gradle/caches/transforms-2/files-2.1/6e5704dd68303e4fb20822eb7eb6c94a/RobotCore-release/res/values-v14/values-v14.xml",
+                    "source": "/Users/petr-konstantin/.gradle/caches/transforms-2/files-2.1/6e5704dd68303e4fb20822eb7eb6c94a/RobotCore-release/res/values-v14/values-v14.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

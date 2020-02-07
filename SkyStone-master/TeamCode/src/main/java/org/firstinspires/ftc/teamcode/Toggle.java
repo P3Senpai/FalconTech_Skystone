@@ -103,7 +103,6 @@ class Toggle{
     public void reset(){
         counter = 0;
         holdingCounter = 0;
-        System.out.println("Counter has been reset");
     }
 }
 
