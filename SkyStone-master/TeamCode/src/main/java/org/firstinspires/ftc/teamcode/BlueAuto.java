@@ -226,8 +226,9 @@ public class BlueAuto extends LinearOpMode {
         encoderLift(20, 5, -1, 0.8);
         drive(-38);
         encoderLift(20, 2, 1, 0.8);
+        strafeRight(20);
         drive(13);
-        strafeRight(40);
+        strafeRight(20);
 
         //moving right on y axis is negative
 
