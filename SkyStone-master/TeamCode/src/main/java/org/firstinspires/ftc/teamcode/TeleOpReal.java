@@ -72,7 +72,7 @@ public class TeleOpReal extends LinearOpMode {
         while (opModeIsActive()) {
 
             petrControls(gamepad1);
-            harryControls(gamepad2);
+
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
@@ -82,8 +82,6 @@ public class TeleOpReal extends LinearOpMode {
     }
     private void petrControls(Gamepad gp){
         drive(gp);
-    }
-    private void harryControls(Gamepad gp){
         lift(gp); // uses left stick and dpad up,down
         grabber(gp); // uses x button
         tapeShooter(gp); // uses a button
@@ -104,8 +102,8 @@ public class TeleOpReal extends LinearOpMode {
             bot.leftLift.setPower(0.6);
             bot.rightLift.setPower(0.6);
         }else if(gp.dpad_down){
-            bot.leftLift.setPower(-0.3);
-            bot.rightLift.setPower(-0.3);
+            bot.leftLift.setPower(-0.2);
+            bot.rightLift.setPower(-0.2);
         }else{
             bot.leftLift.setPower(0);
             bot.rightLift.setPower(0);
