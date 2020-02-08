@@ -238,6 +238,7 @@ public class RedStoneAuto extends LinearOpMode {
             drive(48);
         }
         releaseFull();
+        strafeLeft(4);
         drive(-10);
 //        //face foundation
 //        rotate(65, 0.5);

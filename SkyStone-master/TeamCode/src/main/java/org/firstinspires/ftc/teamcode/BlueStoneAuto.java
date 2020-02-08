@@ -238,6 +238,7 @@ public class BlueStoneAuto extends LinearOpMode {
             drive(48);
         }
         releaseFull();
+        strafeRight(4);
         drive(-10);
         /*//lift to place
         encoderLift(20, 6, 1, 0.8);

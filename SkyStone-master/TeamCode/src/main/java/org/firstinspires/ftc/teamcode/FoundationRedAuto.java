@@ -60,9 +60,9 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
-@Autonomous(name="Foundation Auto", group="Pushbot")
+@Autonomous(name="Foundation Red Auto", group="Pushbot")
 
-public class FoundationAuto extends LinearOpMode {
+public class FoundationRedAuto extends LinearOpMode {
 
 
     /* Declare OpMode members. */
@@ -124,6 +124,9 @@ public class FoundationAuto extends LinearOpMode {
         encoderLift(20,2,-1,0.7);
         drive(-29.25);
         encoderLift(20,3,1,0.7);
+        strafeLeft(20);
+        drive(4);
+        strafeLeft(15);
 
 
 
